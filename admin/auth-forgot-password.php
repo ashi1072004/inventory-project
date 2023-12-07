@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- auth-forgot-password.html  21 Nov 2019 04:05:02 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
+  <title>Admin Dashboard</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <!-- Template CSS -->
@@ -60,4 +59,5 @@
 
 
 <!-- auth-forgot-password.html  21 Nov 2019 04:05:02 GMT -->
+
 </html>

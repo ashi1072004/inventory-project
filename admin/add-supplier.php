@@ -1,10 +1,10 @@
 <?php
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -22,20 +22,17 @@
               <div class="card-body">
                 <div class="form-group">
                   <label>Supplier Name</label>
-                  <input type="text" id="supname" class="form-control" name="supname" aria-describedby="invalid-name"
-                    required>
+                  <input type="text" id="supname" class="form-control" name="supname" aria-describedby="invalid-name" required>
                   <small id="invalid-name" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Supplier Email</label>
-                  <input type="email" id="supemail" class="form-control" name="supemail"
-                    aria-describedby="invalid-email" required>
+                  <input type="email" id="supemail" class="form-control" name="supemail" aria-describedby="invalid-email" required>
                   <small id="invalid-email" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Supplier Mobile #</label>
-                  <input type="tel" id="supmob" class="form-control" name="supmob" aria-describedby="invalid-mob"
-                    required>
+                  <input type="tel" id="supmob" class="form-control" name="supmob" aria-describedby="invalid-mob" required>
                   <small id="invalid-mob" class="form-text text-danger"></small>
                 </div>
               </div>
@@ -50,12 +47,12 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
   $(document).ready(function() {
     // Supplier name
-    $("#supname").on("input", function(){
+    $("#supname").on("input", function() {
       let data = checkalpha("#supname");
       if (!data) {
         $('#supname').css("border", "1px solid red");
@@ -64,9 +61,9 @@
         $('#supname').css("border", "");
         $('#invalid-name').html("");
       }
-    })
+    });
     // Supplier email
-    $("#supemail").on("input", function(){
+    $("#supemail").on("input", function() {
       let data = checkemail("#supemail");
       if (!data) {
         $('#supemail').css("border", "1px solid red");
@@ -75,9 +72,9 @@
         $('#supemail').css("border", "");
         $('#invalid-email').html("");
       }
-    })
+    });
     // Supplier mobile
-    $("#supmob").on("input", function(){
+    $("#supmob").on("input", function() {
       let data = checkmob("#supmob");
       if (!data) {
         $('#supmob').css("border", "1px solid red");
@@ -86,8 +83,8 @@
         $('#supmob').css("border", "");
         $('#invalid-mob').html("");
       }
-    })
-    
+    });
+
     $('#form').on('submit', (e) => {
       e.preventDefault();
 
@@ -100,7 +97,7 @@
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             // alert(res);
             if (res == 1) {
               Toast.fire({

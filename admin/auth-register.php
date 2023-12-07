@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- auth-register.html  21 Nov 2019 04:05:01 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
+  <title>Admin Dashboard</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <link rel="stylesheet" href="assets/bundles/jquery-selectric/selectric.css">
@@ -50,8 +49,7 @@
                   <div class="row">
                     <div class="form-group col-6">
                       <label for="password" class="d-block">Password</label>
-                      <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator"
-                        name="password">
+                      <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="password">
                       <div id="pwindicator" class="pwindicator">
                         <div class="bar"></div>
                         <div class="label"></div>
@@ -99,4 +97,5 @@
 
 
 <!-- auth-register.html  21 Nov 2019 04:05:02 GMT -->
+
 </html>

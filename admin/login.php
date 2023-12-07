@@ -1,34 +1,11 @@
-<?php
-  include("./include/connect.php");
-  session_start();
-  if(isset($_POST['logsub'])){
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $date = date("Y/m/d");
-    
-    $select = "SELECT * FROM `admin` WHERE `email`='$email' AND `password`='$password'";
-    $logrun = mysqli_query($conn, $select);
-    if(mysqli_num_rows($logrun)==1){
-      $fetch = mysqli_fetch_assoc($logrun);
-      $_SESSION['email'] = $fetch['email'];
-      header('Location: ./index.php' );
-      // .!empty($_SERVER['HTTP_REFERER']) ? 
-      //   $_SERVER['HTTP_REFERER'] : 
-    }
-    else{
-        echo "<script> alert('Invalid Login Details!')</script>";
-    }
-  }
-?>
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
+  <title>Admin Dashboard</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <link rel="stylesheet" href="assets/bundles/bootstrap-social/bootstrap-social.css">
@@ -52,7 +29,7 @@
                 <h4>Login</h4>
               </div>
               <div class="card-body">
-                <form id="form" method="POST" class="needs-validation" novalidate="">
+                <form id="form" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
@@ -77,12 +54,12 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <button type="submit" name="logsub" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                    <button type="submit" name="sub" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       Login
                     </button>
                   </div>
                 </form>
-                
+
               </div>
             </div>
             <div class="mt-5 text-muted text-center">
@@ -100,19 +77,43 @@
   <!-- Template JS File -->
   <script src="assets/js/scripts.js"></script>
   <!-- Custom JS File -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/custom.js"></script>
   <script>
-    $(document).ready(function (){
-      $('#email').on('input', () => {
-        
-        // var passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-        if(!checkemail('#email')){
-          $('#email').css("border", "1px solid red");
-          $('.invalid-email').html("Invalid Email!");
-        }else{
-          $('#email').css("border", "1px solid green");
-          $('.invalid-email').html("");
-        }
+    $(document).ready(function() {
+      // $('#email').on('input', () => {
+
+      //   if (!checkemail('#email')) {
+      //     $('#email').css("border", "1px solid red");
+      //     $('.invalid-email').html("Invalid Email!");
+      //   } else {
+      //     $('#email').css("border", "1px solid green");
+      //     $('.invalid-email').html("");
+      //   }
+      // });
+      // Form Login
+      $("#form").on("submit", function(e) {
+        e.preventDefault();
+        let formdata = new FormData(form);
+        console.log(formdata);
+        $.ajax({
+          method: "POST",
+          url: "./ajax/ajax-login.php",
+          data: formdata,
+          contentType: false,
+          processData: false,
+          success: function(res) {
+            alert(res);
+            if (res == 1) {
+              window.location.href = "./index.php";
+            } else {
+              Toast.fire({
+                icon: 'error',
+                title: 'Invalid Login Details!'
+              })
+            }
+          }
+        });
       });
     });
   </script>
@@ -120,4 +121,5 @@
 
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 </html>

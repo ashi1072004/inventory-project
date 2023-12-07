@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- auth-reset-password.html  21 Nov 2019 04:05:02 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
+  <title>Admin Dashboard</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <!-- Template CSS -->
@@ -37,8 +36,7 @@
                   </div>
                   <div class="form-group">
                     <label for="password">New Password</label>
-                    <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator"
-                      name="password" tabindex="2" required>
+                    <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="password" tabindex="2" required>
                     <div id="pwindicator" class="pwindicator">
                       <div class="bar"></div>
                       <div class="label"></div>
@@ -46,8 +44,7 @@
                   </div>
                   <div class="form-group">
                     <label for="password-confirm">Confirm Password</label>
-                    <input id="password-confirm" type="password" class="form-control" name="confirm-password"
-                      tabindex="2" required>
+                    <input id="password-confirm" type="password" class="form-control" name="confirm-password" tabindex="2" required>
                   </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
@@ -74,4 +71,5 @@
 
 
 <!-- auth-reset-password.html  21 Nov 2019 04:05:02 GMT -->
+
 </html>

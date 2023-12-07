@@ -1,6 +1,6 @@
 "use strict";
 function checkid(aid) {
-    return $(aid).val().match(/^[1-9]+$/);
+    return $(aid).val().match(/^[0-9]+$/);
 }
 
 function checkalpha(aid) {
@@ -12,10 +12,18 @@ function checkdesc(aid) {
     var ades = $(aid).val();
     return ades.match(/^[a-zA-Z0-9 .'"?!,&()@_\-\\n\\r\\s]*$/) && !(ades.length < 3);
 }
+function checkadd(aid) {
+    var ades = $(aid).val();
+    return ades.match(/^[a-zA-Z0-9 .'"#()_\-\\n\\r\\s]*$/);
+}
 
 function checkemail(aid) {
     var aemail = $(aid).val();
     return aemail.match(/^[^\s@]+@[^\s@]+\.[^\s@]*$/);
+}
+function checkpass(aid) {
+    var apass = $(aid).val();
+    return apass.match(/^[a-zA-Z0-9!@#$%^&*]{5,16}$/);
 }
 
 function checkmob(aid) {
@@ -27,7 +35,11 @@ function checkmob(aid) {
 
 function checkcode(aid) {
     var data = $(aid).val();
-    return data.match(/^[0-9]+$/) && (data.length == 12);
+    return data.match(/^[0-9]{12}+$/);
+}
+function checkptcode(aid) {
+    var data = $(aid).val();
+    return data.match(/^[0-9]{5}(?:-[0-9]{4})?$/);
 }
 
 function checkcost(aid) {
