@@ -92,7 +92,7 @@ include("./include/sidebar.php");
                                                 <td>
                                                     <?php echo $fetch['ucpass'] ?>
                                                 </td>
-                                                <td>
+                                                <td class="text-danger">
                                                     <?php echo $fetch['ustatus'] ?>
                                                 </td>
                                                 <td>
@@ -100,13 +100,13 @@ include("./include/sidebar.php");
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    if ($fetch['ustatus'] == 'pending') {
+                                                    if ($fetch['ustatus'] == 'Confirmed') {
                                                     ?>
-                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Confirm"></span></a>
+                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Pending"></span></a>
                                                     <?php
                                                     } else {
                                                     ?>
-                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Pending"></span></a>
+                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Confirm"></span></a>
                                                     <?php
                                                     }
                                                     ?>

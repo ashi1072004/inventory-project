@@ -14,7 +14,7 @@ if (isset($_POST['usub'])) {
     $pt_code = mysqli_real_escape_string($conn, $_POST['pt_code']);
     $upass = mysqli_real_escape_string($conn, $_POST['upass']);
     $ucpass = mysqli_real_escape_string($conn, $_POST['ucpass']);
-    $ustatus = 'Pending';
+    $ustatus = 'Confirmed';
     $udate = date("Y/m/d");
 
     if ($ufname == "" || $ulname == "" || $uemail == "" || $umob == "" || $country == "" || $state == "" || $city == "" || $add1 == "" || $pt_code == "" || $upass == "" || $ucpass == "") {

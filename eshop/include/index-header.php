@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
 	<!-- Meta Tag -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name='copyright' content=''>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Title Tag  -->
-    <title>Eshop</title>
+	<title>Eshop</title>
 	<!-- Favicon -->
 	<link rel="icon" type="image/png" href="images/favicon.png">
 	<!-- Web Font -->
 	<link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
-	
+
 	<!-- StyleSheet -->
-	
+
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<!-- Magnific Popup -->
-    <link rel="stylesheet" href="css/magnific-popup.min.css">
+	<link rel="stylesheet" href="css/magnific-popup.min.css">
 	<!-- Font Awesome -->
-    <link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/font-awesome.css">
 	<!-- Fancybox -->
 	<link rel="stylesheet" href="css/jquery.fancybox.min.css">
 	<!-- Themify Icons -->
-    <link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="css/themify-icons.css">
 	<!-- Nice Select CSS -->
-    <link rel="stylesheet" href="css/niceselect.css">
+	<link rel="stylesheet" href="css/niceselect.css">
 	<!-- Animate CSS -->
-    <link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="css/animate.css">
 	<!-- Flex Slider CSS -->
-    <link rel="stylesheet" href="css/flex-slider.min.css">
+	<link rel="stylesheet" href="css/flex-slider.min.css">
 	<!-- Owl Carousel -->
-    <link rel="stylesheet" href="css/owl-carousel.css">
+	<link rel="stylesheet" href="css/owl-carousel.css">
 	<!-- Slicknav -->
-    <link rel="stylesheet" href="css/slicknav.min.css">
-	
+	<link rel="stylesheet" href="css/slicknav.min.css">
+
 	<!-- Eshop StyleSheet -->
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/responsive.css">
 
-	
-	
+
+
 </head>
+
 <body class="js">
-	
+
 	<!-- Preloader -->
 	<div class="preloader">
 		<div class="preloader-inner">
@@ -57,8 +59,8 @@
 		</div>
 	</div>
 	<!-- End Preloader -->
-	
-	
+
+
 	<!-- Header -->
 	<header class="header shop">
 		<!-- Topbar -->
@@ -82,7 +84,7 @@
 								<li><i class="ti-location-pin"></i> Store location</li>
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
 								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
 							</ul>
 						</div>
 						<!-- End Top Right -->
@@ -186,28 +188,28 @@
 							<div class="all-category">
 								<h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIES</h3>
 								<ul class="main-category">
-								<?php
+									<?php
 									$csql = "SELECT * FROM `category` ";
 									$crun = mysqli_query($conn, $csql);
-									while($cfetch = mysqli_fetch_assoc($crun)){
-								?>
-									<li><a href="./category.php?cid=<?php echo $cfetch['cid']?>"><?php echo $cfetch['cname']?><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-										<ul class="sub-category">
-										<?php
-											$cid = $cfetch['cid'];
-											$ssql = "SELECT * FROM `subcategory` WHERE `catid`='$cid' ";
-											$srun = mysqli_query($conn, $ssql);
-											while($sfetch = mysqli_fetch_assoc($srun)){
-										?>
-											<li><a href="./subcategory.php?subid=<?php echo $sfetch['subid']?>"><?php echo $sfetch['subname']?></a></li>
-										<?php
-											}
-										?>
-										</ul>
-									</li>	
-								<?php
+									while ($cfetch = mysqli_fetch_assoc($crun)) {
+									?>
+										<li><a href="./category.php?cid=<?php echo $cfetch['cid'] ?>"><?php echo $cfetch['cname'] ?><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+											<ul class="sub-category">
+												<?php
+												$cid = $cfetch['cid'];
+												$ssql = "SELECT * FROM `subcategory` WHERE `catid`='$cid' ";
+												$srun = mysqli_query($conn, $ssql);
+												while ($sfetch = mysqli_fetch_assoc($srun)) {
+												?>
+													<li><a href="./subcategory.php?subid=<?php echo $sfetch['subid'] ?>"><?php echo $sfetch['subname'] ?></a></li>
+												<?php
+												}
+												?>
+											</ul>
+										</li>
+									<?php
 									}
-								?>
+									?>
 								</ul>
 							</div>
 						</div>
@@ -215,25 +217,25 @@
 							<div class="menu-area">
 								<!-- Main Menu -->
 								<nav class="navbar navbar-expand-lg">
-									<div class="navbar-collapse">	
-										<div class="nav-inner">	
+									<div class="navbar-collapse">
+										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li class="active"><a href="./index.php">Home</a></li>
 												<li><a href="#">Product<i class="ti-angle-down"></i><span class="new">New</span></a>
 													<ul class="dropdown">
 														<li><a href="./shop.php">Shop</a></li>
-														<li><a href="./cart.php">Cart</a></li>		
+														<li><a href="./cart.php">Cart</a></li>
 													</ul>
 												</li>
 												<li><a href="#">Service</a></li>
 												<li><a href="./blog.php">Blog</a></li>
-												<li><a href="./checkout.php">Checkout</a></li>		
+												<li><a href="./checkout.php">Checkout</a></li>
 												<li><a href="./contact.php">Contact Us</a></li>
 											</ul>
 										</div>
 									</div>
 								</nav>
-								<!--/ End Main Menu -->	
+								<!--/ End Main Menu -->
 							</div>
 						</div>
 					</div>
