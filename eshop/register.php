@@ -1,3 +1,6 @@
+<?php
+include('../admin/include/connect.php');
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -72,83 +75,95 @@
                     <div class="checkout-form">
 
                         <!-- Form -->
-                        <form class="form" method="post" action="#">
+                        <form id="form" class="form">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>First Name<span>*</span></label>
-                                        <input type="text" name="ufname" required>
+                                        <input type="text" id="ufname" name="ufname" aria-describedby="invalid-fname" required>
+                                        <small id="invalid-fname" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Last Name<span>*</span></label>
-                                        <input type="text" name="ulname" required>
+                                        <input type="text" id="ulname" name="ulname" aria-describedby="invalid-lname" required>
+                                        <small id="invalid-lname" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Email Address<span>*</span></label>
-                                        <input type="email" name="uemail" required>
+                                        <input type="email" id="uemail" name="uemail" aria-describedby="invalid-email" required>
+                                        <small id="invalid-email" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Phone Number<span>*</span></label>
-                                        <input type="number" name="umob" required>
+                                        <input type="tel" id="umob" name="umob" aria-describedby="invalid-mob" required>
+                                        <small id="invalid-mob" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Country<span>*</span></label>
-                                        <input type="text" name="country" id="country" required>
+                                        <input type="text" name="country" id="country" aria-describedby="invalid-cn" required>
+                                        <small id="invalid-cn" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>State / Divition<span>*</span></label>
-                                        <input type="text" name="state" id="state" required>
+                                        <input type="text" name="state" id="state" aria-describedby="invalid-st" required>
+                                        <small id="invalid-st" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>City<span>*</span></label>
-                                        <input type="text" name="city" id="city" required>
+                                        <input type="text" name="city" id="city" aria-describedby="invalid-ct" required>
+                                        <small id="invalid-ct" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Postal Code<span>*</span></label>
-                                        <input type="text" name="pt_code" required>
+                                        <input type="text" id="pt_code" name="pt_code" aria-describedby="invalid-code" required>
+                                        <small id="invalid-code" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Address Line 1<span>*</span></label>
-                                        <input type="text" name="add1" required>
+                                        <input type="text" id="add1" name="add1" aria-describedby="invalid-add1" required>
+                                        <small id="invalid-add1" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Address Line 2<span>*</span></label>
-                                        <input type="text" name="add2">
+                                        <input type="text" id="add2" name="add2" aria-describedby="invalid-add2">
+                                        <small id="invalid-add2" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Password<span>*</span></label>
-                                        <input type="password" name="upass" required>
+                                        <input type="password" id="upass" name="upass" aria-describedby="invalid-upass" required>
+                                        <small id="invalid-upass" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Confirm Password<span>*</span></label>
-                                        <input type="password" name="ucpass" required>
+                                        <input type="password" id="ucpass" name="ucpass" aria-describedby="invalid-ucpass" required>
+                                        <small id="invalid-ucpass" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-12 text-center">
                                     <div class="form-group button">
-                                        <button type="submit" class="btn">Create Account</button>
+                                        <button type="submit" name="usub" class="btn">Create Account</button>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -178,6 +193,163 @@
     <script src="js/scrollup.js"></script>
     <!-- Active JS -->
     <script src="js/active.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../admin/assets/js/custom.js"></script>
+    <script>
+        $(document).ready(function() {
+            function data(d, inp, inv) {
+                if (!d) {
+                    $(inp).css("border", "1px solid red");
+                    $(inv).html("Invalid Data!");
+                } else {
+                    $(inp).css("border", "");
+                    $(inv).html("");
+                }
+            }
+
+            function checkalpha(aid) {
+                var aname = $(aid).val();
+                return aname.match(/^[a-zA-Z\s]*$/);
+            }
+
+            function checkdesc(aid) {
+                var ades = $(aid).val();
+                return ades.match(/^[a-zA-Z0-9 .'"?!,&()@_\-\\n\\r\\s]*$/) && !(ades.length < 3);
+            }
+
+            function checkadd(aid) {
+                var ades = $(aid).val();
+                return ades.match(/^[a-zA-Z0-9 .'"#()_\-\\n\\r\\s]*$/);
+            }
+
+            function checkemail(aid) {
+                var aemail = $(aid).val();
+                return aemail.match(/^[^\s@]+@[^\s@]+\.[^\s@]*$/);
+            }
+
+            function checkpass(aid) {
+                var apass = $(aid).val();
+                return apass.match(/^[a-zA-Z0-9!@#$%^&*]{5,16}$/);
+            }
+
+            function checkmob(aid) {
+                var mobRegex = /^\+\d{1,2}(\s?|-?)\(?\d{1,4}\)?(\s?|-?)\d{2,3}-?\d{4,7}$/;
+                var amob = $(aid).val();
+                return mobRegex.test(amob);
+            }
+
+            function checkptcode(aid) {
+                var data = $(aid).val();
+                return data.match(/^[0-9]{5}(?:-[0-9]{4})?$/);
+            }
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            // User fname
+            $("#ufname").on("input", function() {
+                data(checkalpha("#ufname"), $('#ufname'), $('#invalid-fname'));
+            });
+            // User lname
+            $("#ulname").on("input", function() {
+                data(checkalpha("#ulname"), $('#ulname'), $('#invalid-lname'));
+            });
+            // User email
+            $("#uemail").on("input", function() {
+                data(checkemail("#uemail"), $('#uemail'), $('#invalid-email'));
+            });
+            // User mobile
+            $("#umob").on("input", function() {
+                data(checkmob("#umob"), $('#umob'), $('#invalid-mob'));
+            });
+            // Country
+            $("#country").on("input", function() {
+                data(checkalpha("#country"), $('#country'), $('#invalid-cn'));
+            });
+            // State
+            $("#state").on("input", function() {
+                data(checkalpha("#state"), $('#state'), $('#invalid-st'));
+            });
+            // City
+            $("#city").on("input", function() {
+                data(checkalpha("#city"), $('#city'), $('#invalid-ct'));
+            });
+            // Address1
+            $("#add1").on("input", function() {
+                data(checkdesc("#add1"), $('#add1'), $('#invalid-add1'));
+            });
+            // Address2
+            $("#add2").on("input", function() {
+                data(checkadd("#add2"), $('#add2'), $('#invalid-add2'));
+            });
+            // Postal Code
+            $("#pt_code").on("input", function() {
+                data(checkptcode("#pt_code"), $('#pt_code'), $('#invalid-code'));
+            });
+            // Password
+            $("#upass").on("input", function() {
+                data(checkpass("#upass"), $('#upass'), $('#invalid-upass'));
+            });
+            // Confirm Password
+            $("#ucpass").on("input", function() {
+                data(checkpass("#ucpass"), $('#ucpass'), $('#invalid-ucpass'));
+            });
+
+            $('#form').on('submit', (e) => {
+                e.preventDefault();
+
+                if (checkalpha("#ufname") && checkalpha("#ulname") && checkemail("#uemail") && checkmob("#umob") && checkalpha("#country") && checkalpha("#state") && checkalpha("#city") && checkdesc("#add1") && checkadd("#add2") && checkptcode("#pt_code") && checkpass("#upass") && checkpass("#ucpass")) {
+                    let formdata = new FormData(form);
+                    formdata.append("usub", true);
+                    console.log(formdata);
+                    $.ajax({
+                        method: "POST",
+                        url: "./ajax/user-register.php",
+                        data: formdata,
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            alert(res);
+                            if (res == 1) {
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Please fill all the fields!'
+                                })
+                            } else if (res == 2) {
+                                $("#form").trigger("reset");
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Data inserted!'
+                                })
+                            } else if (res == 3) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Data not inserted'
+                                })
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Passwords do not match!'
+                                })
+                            }
+                        }
+                    });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Please Check Your Inputs!'
+                    })
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

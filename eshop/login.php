@@ -69,7 +69,7 @@
                     <div class="checkout-form">
 
                         <!-- Form -->
-                        <form class="form" method="post" action="#">
+                        <form id="form" class="form">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -81,6 +81,7 @@
                                     <div class="form-group">
                                         <label>Password</label>
                                         <input type="password" name="upass" required>
+                                        <a style="color: blue; text-decoration: underline;" href="#">Forgot Password</a>
                                     </div>
                                 </div>
                                 <div class="col-12 text-center">
@@ -89,8 +90,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <a style="color:blue" href="#">Forgot Password</a>
-                                    <span>&nbsp; &nbsp; Don't Have an account? <a style="color:blue" href="./register.php">Create one</a></span>
+                                    <span>&nbsp; &nbsp; Don't Have an account? <a style="color: blue; text-decoration: underline;" href="./register.php">Create one</a></span>
                                 </div>
                             </div>
                         </form>
@@ -114,6 +114,46 @@
     <script src="js/nicesellect.js"></script>
     <!-- Active JS -->
     <script src="js/active.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            // Form Login
+            $("#form").on("submit", function(e) {
+                e.preventDefault();
+                let formdata = new FormData(form);
+                console.log(formdata);
+                $.ajax({
+                    method: "POST",
+                    url: "./ajax/user-login.php",
+                    data: formdata,
+                    contentType: false,
+                    processData: false,
+                    success: function(res) {
+                        alert(res);
+                        if (res == 1) {
+                            window.location.href = "./index.php";
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            });
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Invalid Login Details!'
+                            })
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

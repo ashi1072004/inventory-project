@@ -92,26 +92,36 @@ include("./include/sidebar.php");
                                                 <td>
                                                     <?php echo $fetch['ucpass'] ?>
                                                 </td>
-                                                <td class="text-danger">
+                                                <?php
+                                                if ($fetch['ustatus'] == 'Confirmed') {
+                                                ?>
+                                                    <td class="text-success">
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <td class="text-danger">
+                                                    <?php
+                                                }
+                                                    ?>
                                                     <?php echo $fetch['ustatus'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $fetch['udate'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                    if ($fetch['ustatus'] == 'Confirmed') {
-                                                    ?>
-                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Pending"></span></a>
-                                                    <?php
-                                                    } else {
-                                                    ?>
-                                                        <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Confirm"></span></a>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><button data-id="<?php echo $fetch['uid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $fetch['udate'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        if ($fetch['ustatus'] == 'Confirmed') {
+                                                        ?>
+                                                            <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Pending"></span></a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <a href="./update-supplier.php?uid=<?php echo $fetch['uid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Confirm"></span></a>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <td><button data-id="<?php echo $fetch['uid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
                                             </tr>
                                         <?php
                                         }

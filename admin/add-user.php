@@ -96,7 +96,7 @@ include("./include/footer.php");
 ?>
 <script>
     $(document).ready(function() {
-        function data(d, inp, inv) {
+        let data = function(d, inp, inv) {
             if (!d) {
                 $(inp).css("border", "1px solid red");
                 $(inv).html("Invalid Data!");
@@ -104,7 +104,7 @@ include("./include/footer.php");
                 $(inp).css("border", "");
                 $(inv).html("");
             }
-        }
+        };
         // User fname
         $("#ufname").on("input", function() {
             data(checkalpha("#ufname"), $('#ufname'), $('#invalid-fname'));
@@ -167,7 +167,7 @@ include("./include/footer.php");
                     contentType: false,
                     processData: false,
                     success: function(res) {
-                        // alert(res);
+                        alert(res);
                         if (res == 1) {
                             Toast.fire({
                                 icon: 'warning',
@@ -178,17 +178,17 @@ include("./include/footer.php");
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Data inserted!'
-                            })
+                            });
                         } else if (res == 3) {
                             Toast.fire({
                                 icon: 'error',
                                 title: 'Data not inserted'
-                            })
+                            });
                         } else {
                             Toast.fire({
                                 icon: 'error',
                                 title: 'Passwords do not match!'
-                            })
+                            });
                         }
                     }
                 });
@@ -196,7 +196,7 @@ include("./include/footer.php");
                 Toast.fire({
                     icon: 'error',
                     title: 'Please Check Your Inputs!'
-                })
+                });
             }
         });
     });

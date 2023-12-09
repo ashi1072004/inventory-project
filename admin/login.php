@@ -39,13 +39,13 @@
                     <div class="d-block">
                       <label for="password" class="control-label">Password</label>
                       <div class="float-right">
-                        <a href="auth-forgot-password.html" class="text-small">
+                        <a href="auth-forgot-password.php" class="text-small">
                           Forgot Password?
                         </a>
                       </div>
                     </div>
                     <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                    <div class="invalid-pass"></div>
+                    <div class="invalid-password"></div>
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
@@ -81,16 +81,6 @@
   <script src="assets/js/custom.js"></script>
   <script>
     $(document).ready(function() {
-      // $('#email').on('input', () => {
-
-      //   if (!checkemail('#email')) {
-      //     $('#email').css("border", "1px solid red");
-      //     $('.invalid-email').html("Invalid Email!");
-      //   } else {
-      //     $('#email').css("border", "1px solid green");
-      //     $('.invalid-email').html("");
-      //   }
-      // });
       // Form Login
       $("#form").on("submit", function(e) {
         e.preventDefault();
@@ -98,12 +88,12 @@
         console.log(formdata);
         $.ajax({
           method: "POST",
-          url: "./ajax/ajax-login.php",
+          url: "./ajax/admin-login.php",
           data: formdata,
           contentType: false,
           processData: false,
           success: function(res) {
-            alert(res);
+            // alert(res);
             if (res == 1) {
               window.location.href = "./index.php";
             } else {
