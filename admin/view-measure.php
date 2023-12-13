@@ -1,11 +1,11 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 <style>
   td>button,
@@ -40,27 +40,25 @@
                   </thead>
                   <tbody>
                     <?php
-                      $m = "SELECT * FROM `measure` ";
-                      $run = mysqli_query($conn, $m);
-                      while($fetch = mysqli_fetch_assoc($run)){
-                      ?>
-                    <tr>
-                      <td>
-                        <?php echo $fetch['mname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['mdes']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['mdate']?>
-                      </td>
-                      <td><a href="./update-measure.php?mid=<?php echo $fetch['mid']?>"><span data-feather="edit"
-                            data-toggle="tooltip" title="Update"></span></a></td>
-                      <td><button data-id="<?php echo $fetch['mid']?>" class="del"><span data-feather="trash-2"
-                            data-toggle="tooltip" title="Delete"></span></button></td>
-                    </tr>
+                    $m = "SELECT * FROM `measure` ";
+                    $run = mysqli_query($conn, $m);
+                    while ($fetch = mysqli_fetch_assoc($run)) {
+                    ?>
+                      <tr>
+                        <td>
+                          <?php echo $fetch['mname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['mdes'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['mdate'] ?>
+                        </td>
+                        <td><a href="./update-measure.php?mid=<?php echo $fetch['mid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
+                        <td><button data-id="<?php echo $fetch['mid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                      </tr>
                     <?php
-                      }
+                    }
                     ?>
                   </tbody>
                 </table>
@@ -73,11 +71,11 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
-    $(document).on("click", ".del", function () {
+  $(document).ready(function() {
+    $(document).on("click", ".del", function() {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -94,12 +92,14 @@
           $.ajax({
             method: "GET",
             url: "./ajax/delete.php",
-            data: { "delmid": mid },
-            success: function (res) {
+            data: {
+              "delmid": mid
+            },
+            success: function(res) {
               if (res == 1) {
                 Swal.fire({
                   title: "Deleted!",
-                  text: "Your file has been deleted.",
+                  text: "Data has been deleted.",
                   icon: "success"
                 });
                 $(btn).closest("tr").fadeOut();

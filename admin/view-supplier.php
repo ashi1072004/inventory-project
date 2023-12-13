@@ -1,11 +1,11 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 <style>
   td>button,
@@ -41,31 +41,29 @@
                   </thead>
                   <tbody>
                     <?php
-                            $sup = "SELECT * FROM `supplier`";
-                            $run = mysqli_query($conn, $sup);
-                            while($fetch = mysqli_fetch_assoc($run)){
-                            ?>
-                    <tr>
-                      <td>
-                        <?php echo $fetch['supname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['supemail']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['supmob']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['supdate']?>
-                      </td>
-                      <td><a href="./update-supplier.php?supid=<?php echo $fetch['supid']?>"><span data-feather="edit"
-                            data-toggle="tooltip" title="Update"></span></a></td>
-                      <td><button data-id="<?php echo $fetch['supid']?>" class="del"><span data-feather="trash-2"
-                            data-toggle="tooltip" title="Delete"></span></button></td>
-                    </tr>
+                    $sup = "SELECT * FROM `supplier`";
+                    $run = mysqli_query($conn, $sup);
+                    while ($fetch = mysqli_fetch_assoc($run)) {
+                    ?>
+                      <tr>
+                        <td>
+                          <?php echo $fetch['supname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['supemail'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['supmob'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['supdate'] ?>
+                        </td>
+                        <td><a href="./update-supplier.php?supid=<?php echo $fetch['supid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
+                        <td><button data-id="<?php echo $fetch['supid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                      </tr>
                     <?php
-                            }
-                        ?>
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -77,11 +75,11 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
-    $(document).on("click", ".del", function () {
+  $(document).ready(function() {
+    $(document).on("click", ".del", function() {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -98,12 +96,14 @@
           $.ajax({
             method: "GET",
             url: "./ajax/delete.php",
-            data: { "delsupid": supid },
-            success: function (res) {
+            data: {
+              "delsupid": supid
+            },
+            success: function(res) {
               if (res == 1) {
                 Swal.fire({
                   title: "Deleted!",
-                  text: "Your file has been deleted.",
+                  text: "Data has been deleted.",
                   icon: "success"
                 });
                 $(btn).closest("tr").fadeOut();

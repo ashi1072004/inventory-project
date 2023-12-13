@@ -167,7 +167,7 @@ include("./include/footer.php");
                     contentType: false,
                     processData: false,
                     success: function(res) {
-                        alert(res);
+                        // alert(res);
                         if (res == 1) {
                             Toast.fire({
                                 icon: 'warning',

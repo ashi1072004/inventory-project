@@ -1,11 +1,11 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 <style>
   td>button,
@@ -41,31 +41,29 @@
                   </thead>
                   <tbody>
                     <?php
-                            $subcat = "SELECT * FROM `subcategory` sub INNER JOIN `category` ctg ON sub.catid=ctg.cid ORDER BY `cname` ";
-                            $run = mysqli_query($conn, $subcat);
-                            while($fetch = mysqli_fetch_assoc($run)){
-                            ?>
-                    <tr>
-                      <td>
-                        <?php echo $fetch['cname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['subname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['subdes']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['subdate']?>
-                      </td>
-                      <td><a href="./update-subcategory.php?subid=<?php echo $fetch['subid']?>"><span
-                            data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
-                      <td><button data-id="<?php echo $fetch['subid']?>" class="del"><span data-feather="trash-2"
-                            data-toggle="tooltip" title="Delete"></span></button></td>
-                    </tr>
+                    $subcat = "SELECT * FROM `subcategory` sub INNER JOIN `category` ctg ON sub.catid=ctg.cid ORDER BY `cname` ";
+                    $run = mysqli_query($conn, $subcat);
+                    while ($fetch = mysqli_fetch_assoc($run)) {
+                    ?>
+                      <tr>
+                        <td>
+                          <?php echo $fetch['cname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['subname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['subdes'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['subdate'] ?>
+                        </td>
+                        <td><a href="./update-subcategory.php?subid=<?php echo $fetch['subid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
+                        <td><button data-id="<?php echo $fetch['subid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                      </tr>
                     <?php
-                            }
-                        ?>
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -77,11 +75,11 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
-    $(document).on("click", ".del", function () {
+  $(document).ready(function() {
+    $(document).on("click", ".del", function() {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -98,12 +96,14 @@
           $.ajax({
             method: "GET",
             url: "./ajax/delete.php",
-            data: { "delsubid": subid },
-            success: function (res) {
+            data: {
+              "delsubid": subid
+            },
+            success: function(res) {
               if (res == 1) {
                 Swal.fire({
                   title: "Deleted!",
-                  text: "Your file has been deleted.",
+                  text: "Data has been deleted.",
                   icon: "success"
                 });
                 $(btn).closest("tr").fadeOut();

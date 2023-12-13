@@ -1,3 +1,7 @@
+<?php
+session_start();
+include('../admin/include/connect.php');
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -44,8 +48,13 @@
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="css/responsive.css">
-
-
+	<style>
+		.dropdown>button {
+			background: none;
+			outline: none;
+			border: none;
+		}
+	</style>
 
 </head>
 
@@ -85,7 +94,25 @@
 								<li><i class="ti-location-pin"></i> Store location</li>
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
 								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+								<li class="dropdown">
+									<button class="dropdown-toggle border-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti-power-off"></i></button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										<li class="dropdown-item">
+											<?php
+											if (!empty($_SESSION['uemail'])) {
+											?>
+												<a href="./logout.php">Logout</a>
+											<?php
+											} else {
+											?>
+												<a href="./login.php">Login</a>
+											<?php
+											}
+											?>
+										</li>
+										<li class="dropdown-item"><a href="./register.php">Register</a></li>
+									</ul>
+								</li>
 							</ul>
 						</div>
 						<!-- End Top Right -->

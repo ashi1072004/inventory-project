@@ -38,7 +38,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layers"></i><span>Quantity/Measurement</span></a>
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="bar-chart-2"></i><span>Quantity/Measurement</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="./add-measure.php">Add Quantity/Measurement</a></li>
                     <li><a class="nav-link" href="./view-measure.php">View Quantity/Measurement</a></li>
@@ -56,6 +56,13 @@
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="./add-user.php">Add User</a></li>
                     <li><a class="nav-link" href="./view-user.php">View User</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="shopping-cart"></i><span>POS</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="./pos.php">POS</a></li>
+                    <li><a class="nav-link" href="#">View</a></li>
                 </ul>
             </li>
 

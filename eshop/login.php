@@ -129,7 +129,7 @@
                     contentType: false,
                     processData: false,
                     success: function(res) {
-                        alert(res);
+                        // alert(res);
                         if (res == 1) {
                             window.location.href = "./index.php";
                         } else {

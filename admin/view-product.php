@@ -1,11 +1,11 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 <style>
   /* table{
@@ -59,68 +59,66 @@
                   </thead>
                   <tbody>
                     <?php
-                            $psql = "SELECT * FROM `product` p INNER JOIN `category` ctg ON p.pcat=ctg.cid INNER JOIN `subcategory` sub ON p.psubcat=sub.subid INNER JOIN `supplier` sup ON p.psup=sup.supid INNER JOIN `measure` m ON p.pmes=m.mid";
-                            $run = mysqli_query($conn, $psql);
-                            while($fetch = mysqli_fetch_assoc($run)){
-                            ?>
-                    <tr>
-                      <td>
-                        <?php echo $fetch['pid']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['cname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['subname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['supname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pcode']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pdes']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pcost']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['psale']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['mname']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pstock']?>
-                      </td>
-                      <td>
-                        <?php
-                            $p = unserialize($fetch['ppic']);
-                        ?>
-                        <img src="./assets/img/products/<?php echo $p[0]?>" alt="Not Found" width="130" height="100">
-                      </td>
-                      <td>
-                        <?php echo $fetch['status']?>
-                      </td>
-                      <td>
-                        <?php echo $fetch['pdate']?>
-                      </td>
-                      <td>
-                        <a href="./update-product.php?pid=<?php echo $fetch['pid']?>"><span data-feather="edit"
-                            data-toggle="tooltip" title="Update"></span></a>
-                      </td>
-                      <td>
-                        <button data-id="<?php echo $fetch['pid']?>" class="del"><span data-feather="trash-2"
-                            data-toggle="tooltip" title="Delete"></span></button>
-                      </td>
-                    </tr>
+                    $psql = "SELECT * FROM `product` p INNER JOIN `category` ctg ON p.pcat=ctg.cid INNER JOIN `subcategory` sub ON p.psubcat=sub.subid INNER JOIN `supplier` sup ON p.psup=sup.supid INNER JOIN `measure` m ON p.pmes=m.mid";
+                    $run = mysqli_query($conn, $psql);
+                    while ($fetch = mysqli_fetch_assoc($run)) {
+                    ?>
+                      <tr>
+                        <td>
+                          <?php echo $fetch['pid'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['cname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['subname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['supname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pcode'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pdes'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pcost'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['psale'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['mname'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pstock'] ?>
+                        </td>
+                        <td>
+                          <?php
+                          $p = unserialize($fetch['ppic']);
+                          ?>
+                          <img src="./assets/img/products/<?php echo $p[0] ?>" alt="Not Found" width="130" height="100">
+                        </td>
+                        <td>
+                          <?php echo $fetch['status'] ?>
+                        </td>
+                        <td>
+                          <?php echo $fetch['pdate'] ?>
+                        </td>
+                        <td>
+                          <a href="./update-product.php?pid=<?php echo $fetch['pid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a>
+                        </td>
+                        <td>
+                          <button data-id="<?php echo $fetch['pid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button>
+                        </td>
+                      </tr>
                     <?php
-                            }
-                        ?>
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -132,11 +130,11 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
-    $(document).on("click", ".del", function () {
+  $(document).ready(function() {
+    $(document).on("click", ".del", function() {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -153,12 +151,14 @@
           $.ajax({
             method: "GET",
             url: "./ajax/delete.php",
-            data: { "delpid": pid },
-            success: function (res) {
+            data: {
+              "delpid": pid
+            },
+            success: function(res) {
               if (res == 1) {
                 Swal.fire({
                   title: "Deleted!",
-                  text: "Your file has been deleted.",
+                  text: "Product has been deleted.",
                   icon: "success"
                 });
                 $(btn).closest("tr").fadeOut();

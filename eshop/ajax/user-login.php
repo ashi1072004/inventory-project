@@ -8,11 +8,12 @@ $select = "SELECT * FROM `user` WHERE `uemail`='$uemail' AND `upass`='$upass' AN
 $run = mysqli_query($conn, $select);
 if (mysqli_num_rows($run) == 1) {
     $fetch = mysqli_fetch_assoc($run);
-    $_SESSION['email'] = $fetch['uemail'];
+    $_SESSION['uemail'] = $fetch['uemail'];
     echo 1;
     // header('Location: ../index.php');
     // .!empty($_SERVER['HTTP_REFERER']) ? 
     //   $_SERVER['HTTP_REFERER'] : 
 } else {
     echo 2;
+    // echo $select;
 }
