@@ -1,1 +1,1 @@
-This inventory project is handled with php and ajax in the backend. It has 5 main modules Category, SubCategory, Supplier, Quantity/Measurement and Product.
+This inventory project is handled with php and ajax in the backend. It is hosted on local server. Project has an Admin Panel and Eshop user panel. Both online and offline products are managed on Admin Panel. Only offline products are displayed on eshop user panel. User can see products without having an account. But he/she can buy products only when having an account and logged in.
