@@ -1,6 +1,6 @@
 <?php
-session_start();
 include('../admin/include/connect.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -93,26 +93,18 @@ include('../admin/include/connect.php');
 							<ul class="list-main">
 								<li><i class="ti-location-pin"></i> Store location</li>
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li class="dropdown">
-									<button class="dropdown-toggle border-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti-power-off"></i></button>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<li class="dropdown-item">
-											<?php
-											if (!empty($_SESSION['uemail'])) {
-											?>
-												<a href="./logout.php">Logout</a>
-											<?php
-											} else {
-											?>
-												<a href="./login.php">Login</a>
-											<?php
-											}
-											?>
-										</li>
-										<li class="dropdown-item"><a href="./register.php">Register</a></li>
-									</ul>
-								</li>
+								<?php
+								if (!empty($_SESSION['uemail'])) {
+								?>
+									<li><i class="ti-user"></i> <a href="#">My account</a></li>
+									<li><i class="ti-power-off"></i><a href="./logout.php">Logout</a></li>
+								<?php
+								} else {
+								?>
+									<li><i class="ti-power-off"></i><a href="./login.php">Login</a></li>
+								<?php
+								}
+								?>
 							</ul>
 						</div>
 						<!-- End Top Right -->
@@ -127,7 +119,7 @@ include('../admin/include/connect.php');
 					<div class="col-lg-2 col-md-2 col-12">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="index.html"><img src="images/logo.png" alt="logo"></a>
+							<a href="./index.php"><img src="images/logo.png" alt="logo"></a>
 						</div>
 						<!--/ End Logo -->
 						<!-- Search Form -->
@@ -150,9 +142,14 @@ include('../admin/include/connect.php');
 							<div class="search-bar">
 								<select>
 									<option selected="selected">All Category</option>
-									<option>watch</option>
-									<option>mobile</option>
-									<option>kid’s item</option>
+									<?php
+									$csql = "SELECT * FROM `category` ";
+									$crun = mysqli_query($conn, $csql);
+									while ($cfetch = mysqli_fetch_assoc($crun)) {
+									?>
+										<option><?= $cfetch['cname'] ?></option>
+									<?php
+									} ?>
 								</select>
 								<form>
 									<input name="search" placeholder="Search Products Here....." type="search">
@@ -197,7 +194,7 @@ include('../admin/include/connect.php');
 											<span>Total</span>
 											<span class="total-amount">$134.00</span>
 										</div>
-										<a href="checkout.html" class="btn animate">Checkout</a>
+										<a href="checkout.php" class="btn animate">Checkout</a>
 									</div>
 								</div>
 								<!--/ End Shopping Item -->
@@ -220,15 +217,16 @@ include('../admin/include/connect.php');
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li class="active"><a href="./index.php">Home</a></li>
-												<li><a href="#">Product<i class="ti-angle-down"></i><span class="new">New</span></a>
-													<ul class="dropdown">
-														<li><a href="./shop.php">Shop</a></li>
-														<li><a href="./cart.php">Cart</a></li>
-													</ul>
-												</li>
-												<li><a href="#">Service</a></li>
-												<li><a href="./blog.php">Blog</a></li>
-												<li><a href="./checkout.php">Checkout</a></li>
+												<li><a href="./shop.php">Shop</a></li>
+												<!-- <li><a href="./blog.php">Blog</a></li> -->
+												<?php
+												if (!empty($_SESSION['uemail'])) {
+												?>
+													<li><a href="./cart.php">Cart</a></li>
+													<li><a href="./checkout.php">Checkout</a></li>
+												<?php
+												}
+												?>
 												<li><a href="./contact.php">Contact Us</a></li>
 											</ul>
 										</div>

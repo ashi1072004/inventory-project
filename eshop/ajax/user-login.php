@@ -10,10 +10,7 @@ if (mysqli_num_rows($run) == 1) {
     $fetch = mysqli_fetch_assoc($run);
     $_SESSION['uemail'] = $fetch['uemail'];
     echo 1;
-    // header('Location: ../index.php');
-    // .!empty($_SERVER['HTTP_REFERER']) ? 
-    //   $_SERVER['HTTP_REFERER'] : 
+    // header('Location: ' . !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '..index.php');
 } else {
     echo 2;
-    // echo $select;
 }

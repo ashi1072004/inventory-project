@@ -100,6 +100,9 @@
 	<script src="js/popper.min.js"></script>
 	<!-- Bootstrap JS -->
 	<script src="js/bootstrap.min.js"></script>
+	<!-- Sweet Alerts -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="../admin/assets/js/custom.js"></script>
 	<!-- Slicknav JS -->
 	<script src="js/slicknav.min.js"></script>
 	<!-- Owl Carousel JS -->

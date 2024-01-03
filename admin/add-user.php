@@ -174,20 +174,25 @@ include("./include/footer.php");
                                 title: 'Please fill all the fields!'
                             })
                         } else if (res == 2) {
+                            Toast.fire({
+                                icon: 'warning',
+                                title: 'Email Already Exists!'
+                            });
+                        } else if (res == 3) {
                             $("#form").trigger("reset");
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Data inserted!'
                             });
-                        } else if (res == 3) {
+                        } else if (res == 5) {
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Data not inserted'
+                                title: 'Passwords do not match!'
                             });
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Passwords do not match!'
+                                title: 'Data not inserted'
                             });
                         }
                     }

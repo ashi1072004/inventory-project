@@ -4,6 +4,13 @@ session_start();
 if (empty($_SESSION['email'])) {
     header('Location: ./login.php');
 }
+
+$posid = $_GET['posid'];
+$select = "SELECT * FROM `pos` WHERE `posid` = '$posid' ";
+$run = mysqli_query($conn, $select);
+$fetch = mysqli_fetch_assoc($run);
+$invoice = $fetch['invoice'];
+
 include("./include/header.php");
 include("./include/sidebar.php");
 ?>
@@ -58,17 +65,17 @@ include("./include/sidebar.php");
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Ìnvoice</label>
-                                    <input id="invoice" type="text" class="form-control" name="invoice" aria-describedby="invalid-invoice" required>
+                                    <input id="invoice" type="text" class="form-control" name="invoice" value="<?php echo $fetch['invoice'] ?>" aria-describedby="invalid-invoice" readonly>
                                     <small id="invalid-invoice" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Customer Name</label>
-                                    <input type="text" id="csname" class="form-control" name="csname" aria-describedby="invalid-csname" required>
+                                    <input type="text" id="csname" class="form-control" name="csname" value="<?php echo $fetch['csname'] ?>" aria-describedby="invalid-csname" required>
                                     <small id="invalid-csname" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No.</label>
-                                    <input type="tel" id="cmob" class="form-control" name="cmob" aria-describedby="invalid-cmob" required>
+                                    <input type="tel" id="cmob" class="form-control" name="cmob" value="<?php echo $fetch['cmob'] ?>" aria-describedby="invalid-cmob" required>
                                     <small id="invalid-cmob" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
@@ -78,9 +85,20 @@ include("./include/sidebar.php");
                                 <div class="form-group">
                                     <label>Status</label>
                                     <select name="ostatus" id="ostatus" class="form-control" required>
-                                        <option value="none" selected>None</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="complete">Complete</option>
+                                        <option value="none">None</option>
+                                        <?php
+                                        if ($fetch['ostatus'] == "Pending") {
+                                        ?>
+                                            <option value="Pending" selected>Pending</option>
+                                            <option value="complete">Complete</option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="Pending">Pending</option>
+                                            <option value="complete" selected>Complete</option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -91,7 +109,7 @@ include("./include/sidebar.php");
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4>View Cart</h4>
+                            <h4>View Order List</h4>
                             <button class="btn btn-danger text-right empty">Empty Table</button>
                         </div>
                         <div class="card-body">
@@ -128,14 +146,14 @@ include("./include/footer.php");
     $(document).ready(function() {
         // Delete product from cart
         $(document).on("click", ".del", function() {
-            let aid = $(this).data("id");
+            let oid = $(this).data("id");
             // alert(aid);
             let btn = this;
             $.ajax({
                 method: "GET",
                 url: "./ajax/pos-query.php",
                 data: {
-                    "delaid": aid
+                    "del-order": oid
                 },
                 success: function(res) {
                     if (res == 1) {
@@ -144,7 +162,8 @@ include("./include/footer.php");
                             title: 'Product deleted from cart!'
                         });
                         $(btn).closest("tr").fadeOut();
-                        showCart();
+                        showUpCart();
+                        showPOS();
                     } else {
                         Toast.fire({
                             icon: 'success',
@@ -170,7 +189,7 @@ include("./include/footer.php");
                         method: "GET",
                         url: "./ajax/pos-query.php",
                         data: {
-                            "empty": true
+                            "empty-order": $("#invoice").val()
                         },
                         success: function(res) {
                             if (res == 1) {
@@ -179,8 +198,9 @@ include("./include/footer.php");
                                     text: "Data deleted!",
                                     icon: "success"
                                 });
-                                showCart();
                                 $(btn).closest("tr").fadeOut();
+                                showUpCart();
+                                showPOS();
                             } else {
                                 alert("Data couldn't be deleted.");
                             }
@@ -199,7 +219,7 @@ include("./include/footer.php");
                 data: {
                     "pid": id,
                     "pqty": pqty,
-                    "cart-add": "add"
+                    "admin-add": $("#invoice").val()
                 },
                 success: function(res) {
                     // alert(res);
@@ -211,7 +231,7 @@ include("./include/footer.php");
                     } else if (res == 2) {
                         Toast.fire({
                             icon: 'warning',
-                            title: 'Product already exists in Cart!'
+                            title: 'Product already exists in Order List!'
                         })
                     } else if (res == 3) {
                         $("#pqty").trigger("reset");
@@ -219,7 +239,7 @@ include("./include/footer.php");
                             icon: 'success',
                             title: 'Product Added!'
                         });
-                        showCart();
+                        showUpCart();
                         showPOS();
                     } else if (res == 4) {
                         Toast.fire({
@@ -246,7 +266,7 @@ include("./include/footer.php");
                 data: {
                     "aqty": aqty,
                     "acode": acode,
-                    "in-cart": true
+                    "in-order": $("#invoice").val()
                 },
                 success: function(res) {
                     // alert(res);
@@ -257,7 +277,7 @@ include("./include/footer.php");
                         });
                     } else if (res == 2) {
                         console.log("Quantity changed!");
-                        showCart();
+                        showUpCart();
                         showPOS();
                     } else if (res == 3) {
                         console.log("Quantity not changed!");
@@ -269,15 +289,13 @@ include("./include/footer.php");
                     }
                 }
             });
-
-
         });
-        // Insert POS
+        // Update POS
         $('#form').on('submit', (e) => {
             e.preventDefault();
 
             let formdata = new FormData(form);
-            formdata.append("sub", true);
+            formdata.append("upsub", true);
             $.ajax({
                 method: "POST",
                 url: "./ajax/pos-query.php",
@@ -292,44 +310,25 @@ include("./include/footer.php");
                             title: 'Please fill all the fields!'
                         })
                     } else if (res == 2) {
-                        Toast.fire({
-                            icon: 'warning',
-                            title: 'Invoice Already Exists!'
-                        })
-                    } else if (res == 3) {
                         $("#form").trigger("reset");
                         Toast.fire({
                             icon: 'success',
-                            title: 'Data inserted!'
+                            title: 'Data updated!'
                         });
-                        showCart();
+                        showUpCart();
                         showPOS();
+                        setTimeout(() => {
+                            window.location.href = "./view-pos.php";
+                        }, 3500);
                     } else {
                         Toast.fire({
                             icon: 'error',
-                            title: 'Data not inserted!'
+                            title: 'Data not updated!'
                         })
                     }
                 }
             });
         });
-        // view Cart
-        showCart();
-
-        function showCart() {
-            $.ajax({
-                method: "GET",
-                url: "./ajax/view.php",
-                data: {
-                    'load': 'cart'
-                },
-                success: function(res) {
-                    res = JSON.parse(res);
-                    $("#cart-table").html(res.output);
-                    $("#tprice").val(res.tcash);
-                }
-            });
-        }
         // view Stock
         showPOS();
 
@@ -342,6 +341,23 @@ include("./include/footer.php");
                 },
                 success: function(res) {
                     $("#pos").html(res);
+                }
+            });
+        }
+        // update cart
+        showUpCart();
+
+        function showUpCart() {
+            $.ajax({
+                method: "GET",
+                url: "./ajax/view.php",
+                data: {
+                    'invoice': $("#invoice").val()
+                },
+                success: function(res) {
+                    res = JSON.parse(res);
+                    $("#cart-table").html(res.output);
+                    $("#tprice").val(res.tcash);
                 }
             });
         }

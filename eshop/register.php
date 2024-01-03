@@ -206,53 +206,6 @@ include('../admin/include/connect.php');
                     $(inv).html("");
                 }
             }
-
-            // function checkalpha(aid) {
-            //     var aname = $(aid).val();
-            //     return aname.match(/^[a-zA-Z\s]*$/);
-            // }
-
-            // function checkdesc(aid) {
-            //     var ades = $(aid).val();
-            //     return ades.match(/^[a-zA-Z0-9 .'"?!,&()@_\-\\n\\r\\s]*$/) && !(ades.length < 3);
-            // }
-
-            // function checkadd(aid) {
-            //     var ades = $(aid).val();
-            //     return ades.match(/^[a-zA-Z0-9 .'"#()_\-\\n\\r\\s]*$/);
-            // }
-
-            // function checkemail(aid) {
-            //     var aemail = $(aid).val();
-            //     return aemail.match(/^[^\s@]+@[^\s@]+\.[^\s@]*$/);
-            // }
-
-            // function checkpass(aid) {
-            //     var apass = $(aid).val();
-            //     return apass.match(/^[a-zA-Z0-9!@#$%^&*]{5,16}$/);
-            // }
-
-            // function checkmob(aid) {
-            //     var mobRegex = /^\+\d{1,2}(\s?|-?)\(?\d{1,4}\)?(\s?|-?)\d{2,3}-?\d{4,7}$/;
-            //     var amob = $(aid).val();
-            //     return mobRegex.test(amob);
-            // }
-
-            // function checkptcode(aid) {
-            //     var data = $(aid).val();
-            //     return data.match(/^[0-9]{5}(?:-[0-9]{4})?$/);
-            // }
-            // const Toast = Swal.mixin({
-            //     toast: true,
-            //     position: 'top-end',
-            //     showConfirmButton: false,
-            //     timer: 3000,
-            //     timerProgressBar: true,
-            //     didOpen: (toast) => {
-            //         toast.addEventListener('mouseenter', Swal.stopTimer)
-            //         toast.addEventListener('mouseleave', Swal.resumeTimer)
-            //     }
-            // });
             // User fname
             $("#ufname").on("input", function() {
                 data(checkalpha("#ufname"), $('#ufname'), $('#invalid-fname'));
@@ -321,24 +274,29 @@ include('../admin/include/connect.php');
                                 Toast.fire({
                                     icon: 'warning',
                                     title: 'Please fill all the fields!'
-                                })
+                                });
                             } else if (res == 2) {
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Email ALready Exists!'
+                                });
+                            } else if (res == 3) {
                                 $("#form").trigger("reset");
                                 Toast.fire({
                                     icon: 'success',
                                     title: 'Data inserted!'
                                 });
                                 window.location.href = './index.php';
-                            } else if (res == 3) {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'Data not inserted'
-                                })
-                            } else {
+                            } else if (res == 5) {
                                 Toast.fire({
                                     icon: 'error',
                                     title: 'Passwords do not match!'
-                                })
+                                });
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Data not inserted'
+                                });
                             }
                         }
                     });

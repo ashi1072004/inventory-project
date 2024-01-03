@@ -17,6 +17,13 @@
                 </ul>
             </li>
             <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user-check"></i><span>User Roles</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="./add-role.php">Add a Role</a></li>
+                    <li><a class="nav-link" href="./view-role.php">View User Roles</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="folder"></i><span>Category</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="./add-category.php">Add Category</a></li>
@@ -62,10 +69,10 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="shopping-cart"></i><span>POS</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="./pos.php">POS</a></li>
-                    <li><a class="nav-link" href="#">View</a></li>
+                    <li><a class="nav-link" href="./view-pos.php">View Checkout</a></li>
                 </ul>
             </li>
-
+            <li><a class="nav-link" href="./view-orders.php"><i data-feather="truck"></i><span>Online Orders</span></a></li>
             <li><a class="nav-link" href="./logout.php"><i data-feather="log-out"></i><span>Logout</span></a></li>
 
         </ul>

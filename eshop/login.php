@@ -131,7 +131,7 @@
                     success: function(res) {
                         // alert(res);
                         if (res == 1) {
-                            window.location.href = "./index.php";
+                            history.back();
                         } else {
                             const Toast = Swal.mixin({
                                 toast: true,

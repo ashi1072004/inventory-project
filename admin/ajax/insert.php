@@ -1,5 +1,28 @@
 <?php
 include("../include/connect.php");
+// ----------------------------- Role --------------------------------
+if (!empty($_POST['rname'])) {
+    $rname = mysqli_real_escape_string($conn, $_POST['rname']);
+    $raccess = mysqli_real_escape_string($conn, $_POST['raccess']);
+    // print_r($_POST['ac_array']);
+
+    if ($rname == "" || $raccess == "none") {
+        echo 1; //fields cannot be empty
+    } else {
+        if ($raccess == 'custom') {
+            $ac_array = serialize($_POST['ac_array']);
+        } else {
+            $ac_array = '';
+        }
+        $insert = "INSERT INTO `role`(`rname`, `raccess`, `ac_array`)VALUES('$rname', '$raccess', '$ac_array')";
+        $run = mysqli_query($conn, $insert);
+        if ($run) {
+            echo 2; //inserted
+        } else {
+            echo 3; // not inserted
+        }
+    }
+}
 // ----------------------------- User --------------------------------
 if (isset($_POST['usub'])) {
     $ufname = mysqli_real_escape_string($conn, $_POST['ufname']);
@@ -18,20 +41,24 @@ if (isset($_POST['usub'])) {
     $udate = date("Y/m/d");
 
     if ($ufname == "" || $ulname == "" || $uemail == "" || $umob == "" || $country == "" || $state == "" || $city == "" || $add1 == "" || $pt_code == "" || $upass == "" || $ucpass == "") {
-        echo 1;
+        echo 1; //fields cannot be empty
     } else {
-        if ($upass == $ucpass) {
-            $insert = "INSERT INTO `user`(`ufname`, `ulname`, `uemail`, `umob`, `country`, `state`, `city`, `add1`, `add2`, `pt_code`, `upass`, `ucpass`, `ustatus`, `udate`)VALUES('$ufname', '$ulname', '$uemail', '$umob', '$country', '$state', '$city', '$add1', '$add2', '$pt_code', '$upass', '$ucpass', '$ustatus','$udate')";
-            $run = mysqli_query($conn, $insert);
-            if ($run) {
-                // echo "<script> alert('Data Inserted!')</script>";
-                echo 2;
-            } else {
-                // echo "<script> alert('Data Not Inserted!')</script>";
-                echo 3;
-            }
+        $select = "SELECT * FROM `user` WHERE `uemail`='$uemail'";
+        $crun = mysqli_query($conn, $select);
+        if (mysqli_num_rows($crun) > 0) {
+            echo 2; //email already exists
         } else {
-            echo 4;
+            if ($upass == $ucpass) {
+                $insert = "INSERT INTO `user`(`ufname`, `ulname`, `uemail`, `umob`, `country`, `state`, `city`, `add1`, `add2`, `pt_code`, `upass`, `ucpass`, `ustatus`, `udate`)VALUES('$ufname', '$ulname', '$uemail', '$umob', '$country', '$state', '$city', '$add1', '$add2', '$pt_code', '$upass', '$ucpass', '$ustatus','$udate')";
+                $run = mysqli_query($conn, $insert);
+                if ($run) {
+                    echo 3; //inserted
+                } else {
+                    echo 4; // not inserted
+                }
+            } else {
+                echo 5; // passwords don't match
+            }
         }
     }
 }
