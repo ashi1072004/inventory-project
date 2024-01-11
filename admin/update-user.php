@@ -4,6 +4,10 @@ session_start();
 if (empty($_SESSION['email'])) {
     header('Location: ./login.php');
 }
+$uid = $_GET['uid'];
+$psql = "SELECT * FROM `user` WHERE `uid` = '$uid' ";
+$prun = mysqli_query($conn, $psql);
+$fetch = mysqli_fetch_assoc($prun);
 include("./include/header.php");
 include("./include/sidebar.php");
 ?>
@@ -18,72 +22,68 @@ include("./include/sidebar.php");
                         <form id="form">
                             <div class="card-header">
                                 <h4>Add User</h4>
-                                <a class="btn btn-primary text-right" href="./view-user.php">View User</a>
+                                <a class="btn btn-primary text-right" href="./view-user.php">Back</a>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" id="ufname" class="form-control" name="ufname" aria-describedby="invalid-fname" required>
+                                    <input type="hidden" name="uid" value="<?php echo $fetch['uid'] ?>">
+                                    <input type="text" id="ufname" class="form-control" name="ufname" value="<?php echo $fetch['ufname'] ?>" aria-describedby="invalid-fname" required>
                                     <small id="invalid-fname" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" id="ulname" class="form-control" name="ulname" aria-describedby="invalid-lname" required>
+                                    <input type="text" id="ulname" class="form-control" name="ulname" value="<?php echo $fetch['ulname'] ?>" aria-describedby="invalid-lname" required>
                                     <small id="invalid-lname" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>User Email</label>
-                                    <input type="email" id="uemail" class="form-control" name="uemail" aria-describedby="invalid-email" required>
+                                    <input type="email" id="uemail" class="form-control" name="uemail" value="<?php echo $fetch['uemail'] ?>" aria-describedby="invalid-email" required>
                                     <small id="invalid-email" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>User Mobile #</label>
-                                    <input type="tel" id="umob" class="form-control" name="umob" aria-describedby="invalid-mob" required>
+                                    <input type="tel" id="umob" class="form-control" name="umob" value="<?php echo $fetch['umob'] ?>" aria-describedby="invalid-mob" required>
                                     <small id="invalid-mob" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <input type="text" id="country" class="form-control" name="country" aria-describedby="invalid-cn" required>
+                                    <input type="text" id="country" class="form-control" name="country" value="<?php echo $fetch['country'] ?>" aria-describedby="invalid-cn" required>
                                     <small id="invalid-cn" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>State</label>
-                                    <input type="text" id="state" class="form-control" name="state" aria-describedby="invalid-st" required>
+                                    <input type="text" id="state" class="form-control" name="state" value="<?php echo $fetch['state'] ?>" aria-describedby="invalid-st" required>
                                     <small id="invalid-st" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>City</label>
-                                    <input type="text" id="city" class="form-control" name="city" aria-describedby="invalid-ct" required>
+                                    <input type="text" id="city" class="form-control" name="city" value="<?php echo $fetch['city'] ?>" aria-describedby="invalid-ct" required>
                                     <small id="invalid-ct" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Address 1</label>
-                                    <input type="text" id="add1" class="form-control" name="add1" aria-describedby="invalid-add1" required>
+                                    <input type="text" id="add1" class="form-control" name="add1" value="<?php echo $fetch['add1'] ?>" aria-describedby="invalid-add1" required>
                                     <small id="invalid-add1" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Address 2</label>
-                                    <input type="text" id="add2" class="form-control" name="add2" aria-describedby="invalid-add2" required>
+                                    <input type="text" id="add2" class="form-control" name="add2" value="<?php echo $fetch['add2'] ?>" aria-describedby="invalid-add2" required>
                                     <small id="invalid-add2" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Postal Code</label>
-                                    <input type="number" id="pt_code" class="form-control" name="pt_code" aria-describedby="invalid-code" required>
+                                    <input type="number" id="pt_code" class="form-control" name="pt_code" value="<?php echo $fetch['pt_code'] ?>" aria-describedby="invalid-code" required>
                                     <small id="invalid-code" class="form-text text-danger"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="password" id="upass" class="form-control" name="upass" aria-describedby="invalid-upass" required>
+                                    <input type="password" id="upass" class="form-control" name="upass" value="<?php echo $fetch['upass'] ?>" aria-describedby="invalid-upass" required>
                                     <small id="invalid-upass" class="form-text text-danger"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirm Password</label>
-                                    <input type="password" id="ucpass" class="form-control" name="ucpass" aria-describedby="invalid-ucpass" required>
-                                    <small id="invalid-ucpass" class="form-text text-danger"></small>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary" name="usub">Submit</button>
+                                <input type="submit" value="Update" class="btn btn-primary">
                             </div>
                         </form>
                     </div>
@@ -150,20 +150,15 @@ include("./include/footer.php");
         $("#upass").on("input", function() {
             data(checkpass("#upass"), $('#upass'), $('#invalid-upass'));
         });
-        // Confirm Password
-        $("#ucpass").on("input", function() {
-            data(checkpass("#ucpass"), $('#ucpass'), $('#invalid-ucpass'));
-        });
 
         $('#form').on('submit', (e) => {
             e.preventDefault();
 
-            if (checkalpha("#ufname") && checkalpha("#ulname") && checkemail("#uemail") && checkmob("#umob") && checkalpha("#country") && checkalpha("#state") && checkalpha("#city") && checkdesc("#add1") && checkadd("#add2") && checkptcode("#pt_code") && checkpass("#upass") && checkpass("#ucpass")) {
+            if (checkalpha("#ufname") && checkalpha("#ulname") && checkemail("#uemail") && checkmob("#umob") && checkalpha("#country") && checkalpha("#state") && checkalpha("#city") && checkdesc("#add1") && checkadd("#add2") && checkptcode("#pt_code") && checkpass("#upass")) {
                 let formdata = new FormData(form);
-                formdata.append("usub", true);
                 $.ajax({
                     method: "POST",
-                    url: "./ajax/insert.php",
+                    url: "./ajax/update.php",
                     data: formdata,
                     contentType: false,
                     processData: false,
@@ -173,27 +168,16 @@ include("./include/footer.php");
                             Toast.fire({
                                 icon: 'warning',
                                 title: 'Please fill all the fields!'
-                            })
+                            });
                         } else if (res == 2) {
                             Toast.fire({
-                                icon: 'warning',
-                                title: 'Email Already Exists!'
-                            });
-                        } else if (res == 3) {
-                            $("#form").trigger("reset");
-                            Toast.fire({
                                 icon: 'success',
-                                title: 'Data inserted!'
-                            });
-                        } else if (res == 5) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: 'Passwords do not match!'
+                                title: 'Data Updated!'
                             });
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Data not inserted'
+                                title: 'Data not updated'
                             });
                         }
                     }

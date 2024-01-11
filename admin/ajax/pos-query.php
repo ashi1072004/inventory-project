@@ -1,30 +1,54 @@
 <?php
 include("../include/connect.php");
 session_start();
+// -------------------------- Update POS --------------------------
 // Delete Product from Admin Order
 if (isset($_GET['del-order'])) {
     $oid = $_GET['del-order'];
-    $del = "DELETE FROM `admin_order` WHERE `order_id` = '$oid' ";
-    $drun = mysqli_query($conn, $del);
-    if ($drun) {
-        echo 1;
+    $sql = "SELECT * FROM `admin_order` WHERE `order_id` = '$oid' ";
+    $run = mysqli_query($conn, $sql);
+    $fetch = mysqli_fetch_assoc($run);
+    $invoice = $fetch['invoice'];
+    $pcode = $fetch['pcode'];
+    $pqty = $fetch['pqty'];
+    $upsql = "UPDATE `product` SET `pstock`=`pstock`+$pqty WHERE `pcode`='$pcode' ";
+    $uprun = mysqli_query($conn, $upsql);
+    if ($uprun) {
+        $del = "DELETE FROM `admin_order` WHERE `order_id` = '$oid' ";
+        $drun = mysqli_query($conn, $del);
+        if ($drun) {
+            echo 1;
+        }
     } else {
         echo 2;
     }
 }
-// Empty Order from invoice
+// Empty Order list from invoice
 if (isset($_GET['empty-order'])) {
     $invoice = $_GET['empty-order'];
-
-    $del = "DELETE FROM `admin_order` WHERE `invoice` = '$invoice' ";
-    $drun = mysqli_query($conn, $del);
-    if ($drun) {
-        echo 1;
+    $sql = "SELECT * FROM `admin_order` WHERE `invoice` = '$invoice' ";
+    $run = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($run) > 0) {
+        while ($fetch = mysqli_fetch_assoc($run)) {
+            $pcode = $fetch['pcode'];
+            $pqty = $fetch['pqty'];
+            $upsql = "UPDATE `product` SET `pstock`=`pstock`+$pqty WHERE `pcode`='$pcode' ";
+            $uprun = mysqli_query($conn, $upsql);
+        }
+        if ($uprun) {
+            $del = "DELETE FROM `admin_order` WHERE `invoice` = '$invoice' ";
+            $drun = mysqli_query($conn, $del);
+            if ($drun) {
+                echo 1;
+            }
+        } else {
+            echo 2;
+        }
     } else {
-        echo 2;
+        echo 3; //table empty
     }
 }
-// Add Stock to Admin order
+// Add Stock to order list
 if (isset($_POST['admin-add'])) {
     $invoice = $_POST['admin-add'];
     $pid = $_POST['pid'];
@@ -35,32 +59,34 @@ if (isset($_POST['admin-add'])) {
     } else {
         $select = "SELECT * FROM `product` WHERE `pid`='$pid' ";
         $run = mysqli_query($conn, $select);
-        if (mysqli_num_rows($run) > 0) {
-            $fetch = mysqli_fetch_assoc($run);
-            $pcode = $fetch['pcode'];
-            $pname = mysqli_real_escape_string($conn, mysqli_real_escape_string($conn, $fetch['pname']));
-            $psale = $fetch['psale'];
-            $pstock = $fetch['pstock'];
-            $aemail = $_SESSION['email'];
-            if ($pstock >= $pqty) {
-                $psql = "SELECT * FROM `admin_order` WHERE `invoice`='$invoice' AND `pcode`='$pcode' ";
-                $prun = mysqli_query($conn, $psql);
-                if (mysqli_num_rows($prun) > 0) {
-                    echo 2; //product already in order
-                } else {
-                    // insert order into list
-                    $ptprice = $psale * $pqty;
-                    $insert = "INSERT INTO `admin_order`(`invoice`, `pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$invoice', '$pcode', '$pname', '$psale', '$pqty', '$ptprice', '$aemail')";
-                    $arun = mysqli_query($conn, $insert);
-                    if ($arun) {
-                        echo 3; //inserted
-                    } else {
-                        echo 4; //not inserted
-                    }
-                }
+        $fetch = mysqli_fetch_assoc($run);
+        $pcode = $fetch['pcode'];
+        $pname = mysqli_real_escape_string($conn, mysqli_real_escape_string($conn, $fetch['pname']));
+        $psale = $fetch['psale'];
+        $pstock = $fetch['pstock'];
+        $aemail = $_SESSION['email'];
+        if ($pstock >= $pqty) {
+            $psql = "SELECT * FROM `admin_order` WHERE `invoice`='$invoice' AND `pcode`='$pcode' ";
+            $prun = mysqli_query($conn, $psql);
+            if (mysqli_num_rows($prun) > 0) {
+                echo 2; //product already in order list
             } else {
-                echo 5; //Out of stock
+                // insert order into list
+                $ptprice = $psale * $pqty;
+                $insert = "INSERT INTO `admin_order`(`invoice`, `pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$invoice', '$pcode', '$pname', '$psale', '$pqty', '$ptprice', '$aemail')";
+                $arun = mysqli_query($conn, $insert);
+                if ($arun) {
+                    $upsql = "UPDATE `product` SET `pstock`=`pstock`-$pqty WHERE `pcode`='$pcode' ";
+                    $uprun = mysqli_query($conn, $upsql);
+                    if ($uprun) {
+                        echo 3; //inserted
+                    }
+                } else {
+                    echo 4; //not inserted
+                }
             }
+        } else {
+            echo 5; //Out of stock
         }
     }
 }
@@ -74,12 +100,30 @@ if (isset($_GET['in-order'])) {
     if ($aqty < 1) {
         echo 1; //invalid value
     } else {
+        $asql = "SELECT * FROM `admin_order` WHERE `invoice` = '$invoice' AND `pcode`='$pcode' ";;
+        $arun = mysqli_query($conn, $asql);
+        $afetch = mysqli_fetch_assoc($arun);
+        $pqty = $afetch['pqty'];
         $select = "SELECT * FROM `product` WHERE `pcode`='$pcode' ";
         $run = mysqli_query($conn, $select);
         $fetch = mysqli_fetch_assoc($run);
-        $pstock = $fetch['pstock'];
-        $pprice = $fetch['psale'];
-        if ($pstock >= $aqty) {
+        if ($aqty < $pqty) {
+            $pqty = $pqty - $aqty;
+            $upsql = "UPDATE `product` SET `pstock`=`pstock`+$pqty WHERE `pcode`='$pcode' ";
+            $uprun = mysqli_query($conn, $upsql);
+        } else {
+            $pqty = $aqty - $pqty;
+            $pstock = $fetch['pstock'];
+            if ($pstock >= $pqty) {
+                $upsql = "UPDATE `product` SET `pstock`=`pstock`-$pqty WHERE `pcode`='$pcode' ";
+                $uprun = mysqli_query($conn, $upsql);
+            } else {
+                echo 4; //Out of stock
+                exit;
+            }
+        }
+        if ($uprun) {
+            $pprice = $fetch['psale'];
             $ptprice = $pprice * $aqty;
             $psql = "UPDATE `admin_order` SET `pqty`='$aqty', `ptprice`='$ptprice' WHERE `pcode`='$pcode' AND `invoice`='$invoice' ";
             $prun = mysqli_query($conn, $psql);
@@ -88,11 +132,32 @@ if (isset($_GET['in-order'])) {
             } else {
                 echo 3; //not updated
             }
-        } else {
-            echo 4; //Out of stock
         }
     }
 }
+// Update POS
+if (isset($_POST['upsub'])) {
+    $invoice = mysqli_real_escape_string($conn, $_POST['invoice']);
+    $csname = mysqli_real_escape_string($conn, $_POST['csname']);
+    $cmob = mysqli_real_escape_string($conn, $_POST['cmob']);
+    $tprice = mysqli_real_escape_string($conn, $_POST['tprice']);
+    $ostatus = mysqli_real_escape_string($conn, $_POST['ostatus']);
+    $odate = date("Y/m/d");
+    $aemail = $_SESSION['email'];
+
+    if ($invoice == "" || $csname == "" || $cmob == "" || $tprice == "" || $ostatus == "none") {
+        echo 1; //check inputs
+    } else {
+        $upsql = "UPDATE `pos` SET `csname`='$csname', `cmob`='$cmob', `tprice`='$tprice', `posdate`='$odate', `ostatus`='$ostatus' WHERE `invoice`='$invoice' ";
+        $run = mysqli_query($conn, $upsql);
+        if ($run) {
+            echo 2; //updated
+        } else {
+            echo 3; //not updated
+        }
+    }
+}
+// -------------------------- Insert POS --------------------------
 // Delete Product from Cart
 if (isset($_GET['delaid'])) {
     $aid = $_GET['delaid'];
@@ -126,32 +191,30 @@ if (isset($_POST['cart-add'])) {
     } else {
         $select = "SELECT * FROM `product` WHERE `pid`='$pid' ";
         $run = mysqli_query($conn, $select);
-        if (mysqli_num_rows($run) > 0) {
-            $fetch = mysqli_fetch_assoc($run);
-            $pcode = $fetch['pcode'];
-            $pname = mysqli_real_escape_string($conn, mysqli_real_escape_string($conn, $fetch['pname']));
-            $psale = $fetch['psale'];
-            $pstock = $fetch['pstock'];
-            $aemail = $_SESSION['email'];
-            if ($pstock >= $pqty) {
-                $psql = "SELECT * FROM `add_to_cart` WHERE `pcode`='$pcode' ";
-                $prun = mysqli_query($conn, $psql);
-                if (mysqli_num_rows($prun) > 0) {
-                    echo 2; //product already in cart
-                } else {
-                    $ptprice = $psale * $pqty;
-                    $insert = "INSERT INTO `add_to_cart`(`pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$pcode', '$pname', '$psale', '$pqty', '$ptprice', '$aemail') ";
-                    $arun = mysqli_query($conn, $insert);
-                    if ($arun) {
-                        echo 3; //inserted
-                    } else {
-                        echo 4; //not inserted
-                    }
-                }
+        $fetch = mysqli_fetch_assoc($run);
+        $pcode = $fetch['pcode'];
+        $pname = mysqli_real_escape_string($conn, mysqli_real_escape_string($conn, $fetch['pname']));
+        $psale = $fetch['psale'];
+        $pstock = $fetch['pstock'];
+        $aemail = $_SESSION['email'];
+        if ($pstock >= $pqty) {
+            $psql = "SELECT * FROM `add_to_cart` WHERE `pcode`='$pcode' ";
+            $prun = mysqli_query($conn, $psql);
+            if (mysqli_num_rows($prun) > 0) {
+                echo 2; //product already in cart
             } else {
-                echo 5; //Out of stock
-
+                $ptprice = $psale * $pqty;
+                $insert = "INSERT INTO `add_to_cart`(`pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$pcode', '$pname', '$psale', '$pqty', '$ptprice', '$aemail') ";
+                $arun = mysqli_query($conn, $insert);
+                if ($arun) {
+                    echo 3; //inserted
+                } else {
+                    echo 4; //not inserted
+                }
             }
+        } else {
+            echo 5; //Out of stock
+
         }
     }
 }
@@ -192,6 +255,7 @@ if (isset($_POST['sub'])) {
     $cmob = mysqli_real_escape_string($conn, $_POST['cmob']);
     $tprice = mysqli_real_escape_string($conn, $_POST['tprice']);
     $ostatus = mysqli_real_escape_string($conn, $_POST['ostatus']);
+    $odate = date("Y/m/d");
     $aemail = $_SESSION['email'];
 
     if ($invoice == "" || $csname == "" || $cmob == "" || $tprice == "" || $ostatus == "none") {
@@ -202,7 +266,7 @@ if (isset($_POST['sub'])) {
         if (mysqli_num_rows($crun) > 0) {
             echo 2; //Already Exists
         } else {
-            $insert = "INSERT INTO `pos`(`invoice`, `csname`, `cmob`, `tprice`, `ostatus`)VALUES('$invoice', '$csname', '$cmob', '$tprice', '$ostatus')";
+            $insert = "INSERT INTO `pos`(`invoice`, `csname`, `cmob`, `tprice`, `posdate`, `ostatus`)VALUES('$invoice', '$csname', '$cmob', '$tprice', '$odate', '$ostatus')";
             $run = mysqli_query($conn, $insert);
             if ($run) {
                 $asql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$aemail' ";
@@ -240,45 +304,6 @@ if (isset($_POST['sub'])) {
             } else {
                 echo 4; //not inserted
             }
-        }
-    }
-}
-// Update POS
-if (isset($_POST['upsub'])) {
-    $invoice = mysqli_real_escape_string($conn, $_POST['invoice']);
-    $csname = mysqli_real_escape_string($conn, $_POST['csname']);
-    $cmob = mysqli_real_escape_string($conn, $_POST['cmob']);
-    $tprice = mysqli_real_escape_string($conn, $_POST['tprice']);
-    $ostatus = mysqli_real_escape_string($conn, $_POST['ostatus']);
-    $aemail = $_SESSION['email'];
-
-    if ($invoice == "" || $csname == "" || $cmob == "" || $tprice == "" || $ostatus == "none") {
-        echo 1; //check inputs
-    } else {
-        $insert = "UPDATE `pos` SET `csname`='$csname', `cmob`='$cmob', `tprice`='$tprice', `ostatus`='$ostatus' WHERE `invoice`='$invoice' ";
-        $run = mysqli_query($conn, $insert);
-        if ($run) {
-            //get pqty
-            $sql = "SELECT * FROM `admin_order` WHERE `invoice` = '$invoice' ";
-            $run = mysqli_query($conn, $sql);
-            while ($fetch = mysqli_fetch_assoc($run)) {
-                $pqty = $fetch['pqty'];
-                $pcode = $fetch['pcode'];
-                // minus qty from stock
-                $psql = "SELECT * FROM `product` WHERE `pcode`='$pcode' ";
-                $prun = mysqli_query($conn, $psql);
-                $pfetch = mysqli_fetch_assoc($prun);
-                $pstock = $pfetch['pstock'];
-                $pstock = $pstock - $pqty;
-                //double check out-of-stock condition
-                if ($pstock >= 0) {
-                    $upsql = "UPDATE `product` SET `pstock`='$pstock' WHERE `pcode`='$pcode' ";
-                    $uprun = mysqli_query($conn, $upsql);
-                }
-            }
-            echo 2; //updated
-        } else {
-            echo 3; //not updated
         }
     }
 }

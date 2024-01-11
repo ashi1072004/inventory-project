@@ -170,89 +170,81 @@ if (isset($_POST['action']) && $_POST['action'] == 'checkout') {
     if (mysqli_num_rows($crun) > 0) {
         echo 1; //Invoice Already Exists TRY AGAIN
     } else {
-        // get user data
-        $usql = "SELECT * FROM `user` WHERE `uemail`='$uemail'";
-        $uquery = mysqli_query($conn, $usql);
-        $ufetch = mysqli_fetch_assoc($uquery);
-        $ufname = $ufetch['ufname'];
-        $ulname = $ufetch['ulname'];
-        $umob = $ufetch['umob'];
-        $country = $ufetch['country'];
-        $state = $ufetch['state'];
-        $city = $ufetch['city'];
-        $add1 = $ufetch['add1'];
-        $add2 = $ufetch['add2'];
-        $pt_code = $ufetch['pt_code'];
-
-        $insert = "INSERT INTO `checkout`(`invoice`, `ufname`, `ulname`, `uemail`, `umob`, `country`, `state`, `city`, `add1`, `add2`, `pt_code`, `tcash`, `o_status`, `udate`)VALUES('$invoice', '$ufname', '$ulname', '$uemail', '$umob', '$country', '$state', '$city', '$add1', '$add2', '$pt_code', '$tcash', 'pending', '$udate')";
-        $run = mysqli_query($conn, $insert);
-        if ($run) {
-            $asql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$uemail' ";
-            $arun = mysqli_query($conn, $asql);
-            while ($fetch = mysqli_fetch_assoc($arun)) {
-                $pcode = $fetch['pcode'];
-                $pname = mysqli_real_escape_string($conn, $fetch['pname']);
-                $pprice = $fetch['pprice'];
-                $pqty = $fetch['pqty'];
-                $ptprice = $fetch['ptprice'];
-                // minus qty from stock
-                $mssql = "SELECT * FROM `product` WHERE `pcode`='$pcode' ";
-                $msrun = mysqli_query($conn, $mssql);
-                $msfetch = mysqli_fetch_assoc($msrun);
-                $pstock = $msfetch['pstock'];
-                $pstock = $pstock - $pqty;
-                //double check out-of-stock condition
-                if ($pstock >= 0) {
-                    // checkout the order
-                    $osql = "INSERT INTO `admin_order`(`invoice`, `pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$invoice', '$pcode', '$pname', '$pprice', '$pqty', '$ptprice', '$uemail')";
-                    $orun = mysqli_query($conn, $osql);
-                    // update stock
-                    $upsql = "UPDATE `product` SET `pstock`='$pstock' WHERE `pcode`='$pcode' ";
-                    $uprun = mysqli_query($conn, $upsql);
-                } else {
-                    //may be no need of this else case
-                    echo 4; // error occured
-                    break;
-                }
-            }
-            if (isset($orun)) {
-                $odel = "DELETE FROM `add_to_cart` WHERE `aemail` = '$uemail' ";
-                $drun = mysqli_query($conn, $odel);
-                if ($drun) {
-                    // send mail to user
-                    require '../../PHPMailer/Exception.php';
-                    require '../../PHPMailer/PHPMailer.php';
-                    require '../../PHPMailer/SMTP.php';
-                    $mail = new PHPMailer(true);
-                    try {
-                        //Server settings
-                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-                        $mail->isSMTP();
-                        $mail->Host = 'smtp.gmail.com';
-                        $mail->SMTPAuth = true;
-                        $mail->Username = 'ghaniaashi@gmail.com';
-                        $mail->Password = 'gbiaavimoqpzydqk';
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                        $mail->Port = 465;
-                        //Recipients
-                        $mail->setFrom($uemail, 'Eshop');
-                        $mail->addAddress($uemail, $ufname . ' ' . $ulname);
-                        //Content
-                        $mail->isHTML(true);
-                        $mail->Subject = 'Order Placed!';
-                        $mail->Body    = '<b>Your Order Has Been Placed!</b>';
-                        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-                        if ($mail->send()) {
-                            echo 2; //Order placed and Message sent
+        $asql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$uemail' ";
+        $arun = mysqli_query($conn, $asql);
+        if (mysqli_num_rows($arun) > 0) {
+            $insert = "INSERT INTO `checkout`(`invoice`, `uemail`, `tcash`, `o_status`, `udate`)VALUES('$invoice', '$uemail', '$tcash', 'pending', '$udate')";
+            $run = mysqli_query($conn, $insert);
+            if ($run) {
+                $tcash = 0;
+                while ($fetch = mysqli_fetch_assoc($arun)) {
+                    $pcode = $fetch['pcode'];
+                    $pname = mysqli_real_escape_string($conn, $fetch['pname']);
+                    $pprice = $fetch['pprice'];
+                    $pqty = $fetch['pqty'];
+                    $ptprice = $fetch['ptprice'];
+                    // minus qty from stock
+                    $mssql = "SELECT * FROM `product` WHERE `pcode`='$pcode' ";
+                    $msrun = mysqli_query($conn, $mssql);
+                    $msfetch = mysqli_fetch_assoc($msrun);
+                    $pstock = $msfetch['pstock'];
+                    $pstock = $pstock - $pqty;
+                    //double check out-of-stock condition
+                    if ($pstock >= 0) {
+                        $tcash += $ptprice;
+                        // checkout the order
+                        $osql = "INSERT INTO `admin_order`(`invoice`, `pcode`, `pname`, `pprice`, `pqty`, `ptprice`, `aemail`)VALUES('$invoice', '$pcode', '$pname', '$pprice', '$pqty', '$ptprice', '$uemail')";
+                        $orun = mysqli_query($conn, $osql);
+                        if ($orun) {
+                            // update stock
+                            $upsql = "UPDATE `product` SET `pstock`='$pstock' WHERE `pcode`='$pcode' ";
+                            $uprun = mysqli_query($conn, $upsql);
+                            // delete product from cart
+                            $odel = "DELETE FROM `add_to_cart` WHERE `aemail` = '$uemail' AND `pcode`='$pcode' ";
+                            $drun = mysqli_query($conn, $odel);
                         }
-                    } catch (Exception $e) {
-                        echo 3; //Order placed but Message not sent
+                    } else {
+                        $upch = "UPDATE `checkout` SET `tcash`='$tcash' WHERE `invoice`='$invoice' ";
+                        $chrun = mysqli_query($conn, $upch);
+                        echo 2; // one of the products out of stock
+                        exit;
                     }
                 }
+                // send mail to user
+                require '../../PHPMailer/Exception.php';
+                require '../../PHPMailer/PHPMailer.php';
+                require '../../PHPMailer/SMTP.php';
+                $mail = new PHPMailer(true);
+                try {
+                    //Server settings
+                    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'ghaniaashi@gmail.com';
+                    $mail->Password = 'gbiaavimoqpzydqk';
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port = 465;
+                    //Recipients
+                    $mail->setFrom($uemail, 'Eshop');
+                    $mail->addAddress($uemail);
+                    //Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Order Placed!';
+                    $mail->Body    = '<b>Your Order Has Been Placed!</b>';
+                    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                    if ($mail->send()) {
+                        echo 3; //Order placed and Message sent
+                    }
+                } catch (Exception $e) {
+                    echo 4; //Order placed but Message not sent
+                }
+            } else {
+                echo 5; //error occured
             }
         } else {
-            echo 4; //error occured
+            echo 5; //error occured
         }
     }
 }
@@ -313,4 +305,69 @@ if (isset($_GET['action']) && $_GET['action'] == 'checkout-show') {
         </div>
     </div>';
     echo $output;
+}
+// Delete Order
+if (isset($_GET['action']) && $_GET['action'] == 'order-del') {
+    $oid = $_GET['oid'];
+    $invoice = $_GET['invoice'];
+    $sql = "SELECT * FROM `admin_order` WHERE `order_id`='$oid'";
+    $run = mysqli_query($conn, $sql);
+    $fetch = mysqli_fetch_assoc($run);
+    $pcode = $fetch['pcode'];
+    $pqty = $fetch['pqty'];
+    $upsql = "UPDATE `product` SET `pstock`=`pstock`+$pqty WHERE `pcode`='$pcode' ";
+    $uprun = mysqli_query($conn, $upsql);
+    if ($uprun) {
+        $dsql = "DELETE FROM `admin_order` WHERE `order_id`='$oid' ";
+        $drun = mysqli_query($conn, $dsql);
+        if ($drun) {
+            echo 1; // canceled
+            // send mail to user
+            require '../../PHPMailer/Exception.php';
+            require '../../PHPMailer/PHPMailer.php';
+            require '../../PHPMailer/SMTP.php';
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'ghaniaashi@gmail.com';
+                $mail->Password = 'gbiaavimoqpzydqk';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port = 465;
+                //Recipients
+                $mail->setFrom($uemail, 'Eshop');
+                $mail->addAddress($uemail);
+                //Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Order Canceled!';
+                $mail->Body    = '<b>Your Order Has Been Canceled!</b>';
+                // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                $mail->send();
+            } catch (Exception $e) {
+                //Order canceled but Message not sent
+            }
+            // update checkout tcash
+            $select = "SELECT * FROM `admin_order` WHERE `invoice`='$invoice'";
+            $prun = mysqli_query($conn, $select);
+            if (mysqli_num_rows($prun) > 0) {
+                $tcash = 0;
+                while ($afetch = mysqli_fetch_assoc($prun)) {
+                    $tcash += $afetch['ptprice'];
+                }
+                $upsql = "UPDATE `checkout` SET `tcash`='$tcash' WHERE `invoice`='$invoice' ";
+                $uprun = mysqli_query($conn, $upsql);
+            } else {
+                $dinv = "DELETE FROM `checkout` WHERE `invoice`='$invoice' ";
+                $invrun = mysqli_query($conn, $dinv);
+            }
+        } else {
+            echo 2; // not canceled 
+        }
+    } else {
+        echo 2; // not canceled 
+    }
 }

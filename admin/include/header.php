@@ -3,6 +3,7 @@
 
 
 <!-- index.html  21 Nov 2019 03:44:50 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -13,7 +14,7 @@
   <link rel="stylesheet" href="assets/bundles/summernote/summernote-bs4.css">
   <!-- Template CSS -->
   <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css">
-  <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="assets/js/datatable/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <!-- Custom style CSS -->
@@ -47,8 +48,7 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-              class="nav-link nav-link-lg message-toggle"><i data-feather="mail"></i>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle"><i data-feather="mail"></i>
               <span class="badge headerBadge1">
                 6 </span> </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
@@ -108,8 +108,7 @@
               </div>
             </div>
           </li>
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-              class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
             </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
               <div class="dropdown-header">
@@ -119,8 +118,7 @@
                 </div>
               </div>
               <div class="dropdown-list-content dropdown-list-icons">
-                <a href="#" class="dropdown-item dropdown-item-unread"> <span
-                    class="dropdown-item-icon bg-primary text-white"> <i class="fas
+                <a href="#" class="dropdown-item dropdown-item-unread"> <span class="dropdown-item-icon bg-primary text-white"> <i class="fas
 												fa-code"></i>
                   </span> <span class="dropdown-item-desc"> Template update is
                     available now! <span class="time">2 Min
@@ -132,16 +130,14 @@
                       Sugiharto</b> are now friends <span class="time">10 Hours
                       Ago</span>
                   </span>
-                </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-success text-white"> <i
-                      class="fas
+                </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-success text-white"> <i class="fas
 												fa-check"></i>
                   </span> <span class="dropdown-item-desc"> <b>Kusnaedi</b> has
                     moved task <b>Fix bug header</b> to <b>Done</b> <span class="time">12
                       Hours
                       Ago</span>
                   </span>
-                </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-danger text-white"> <i
-                      class="fas fa-exclamation-triangle"></i>
+                </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-danger text-white"> <i class="fas fa-exclamation-triangle"></i>
                   </span> <span class="dropdown-item-desc"> Low disk space. Let's
                     clean it! <span class="time">17 Hours Ago</span>
                   </span>
@@ -157,9 +153,7 @@
               </div>
             </div>
           </li>
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user.png"
-                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user.png" class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello Sarah Smith</div>
               <a href="profile.html" class="dropdown-item has-icon"> <i class="far
@@ -170,7 +164,7 @@
                 Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="logout.php" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
             </div>

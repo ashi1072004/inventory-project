@@ -1,10 +1,11 @@
 <?php
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -22,8 +23,7 @@
               <div class="card-body">
                 <div class="form-group">
                   <label>Quantity/Measurement Name</label>
-                  <input type="text" id="mname" class="form-control" name="mname" aria-describedby="invalid-name"
-                    required="">
+                  <input type="text" id="mname" class="form-control" name="mname" aria-describedby="invalid-name" required="">
                   <small id="invalid-name" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-0">
@@ -43,12 +43,12 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     // Quantity/Measurement Name
-    $("#mname").on("input", function () {
+    $("#mname").on("input", function() {
       if (!checkalpha("#mname")) {
         $('#mname').css("border", "1px solid red");
         $('#invalid-name').html("Invalid! only alphabets allowed");
@@ -61,7 +61,7 @@
     function checkmdes(aid) {
       return $(aid).val().match(/^[a-zA-Z0-9 .'"?!,&()@_\-\\n\\r\\s]*$/);
     }
-    $("#mdes").on("input", function () {
+    $("#mdes").on("input", function() {
       if (!checkmdes("#mdes")) {
         $('#mdes').css("border", "1px solid red");
         $('#invalid-des').css("color", "red");
@@ -84,7 +84,7 @@
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             if (res == 1) {
               Toast.fire({
                 icon: 'warning',

@@ -96,7 +96,7 @@ session_start();
 								<?php
 								if (!empty($_SESSION['uemail'])) {
 								?>
-									<li><i class="ti-user"></i> <a href="#">My account</a></li>
+									<li><i class="ti-user"></i> <a href="./profile.php">My account</a></li>
 									<li><i class="ti-power-off"></i><a href="./logout.php">Logout</a></li>
 								<?php
 								} else {
@@ -171,28 +171,40 @@ session_start();
 								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
 								<!-- Shopping Item -->
 								<div class="shopping-item">
-									<div class="dropdown-cart-header">
+									<!-- <div class="dropdown-cart-header">
 										<span>2 Items</span>
 										<a href="#">View Cart</a>
-									</div>
+									</div> -->
 									<ul class="shopping-list">
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Ring</a></h4>
-											<p class="quantity">1x - <span class="amount">$99.00</span></p>
-										</li>
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Necklace</a></h4>
-											<p class="quantity">1x - <span class="amount">$35.00</span></p>
-										</li>
+										<?php
+										if (!empty($_SESSION['uemail'])) {
+											$uemail = $_SESSION['uemail'];
+											$psql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$uemail' ";
+											$prun = mysqli_query($conn, $psql);
+											$tcash = 0;
+											while ($pfetch = mysqli_fetch_assoc($prun)) {
+										?>
+												<li>
+													<a href="./cart.php" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+													<a class="cart-img" href="#"><img src="../admin/assets/img/products/'<?= $pfetch['ppic'] ?>'" alt="#"></a>
+													<h4><a href="#"><?= $pfetch['pname'] ?></a></h4>
+													<p class="quantity"><?= $pfetch['pqty'] ?>x - <span class="amount">$<?= $pfetch['ptprice'] ?></span></p>
+												</li>
+											<?php
+												$tcash += $pfetch['ptprice'];
+											}
+										} else {
+											$tcash = 0;
+											?>
+											<li>Cart is Empty</li>
+										<?php
+										}
+										?>
 									</ul>
 									<div class="bottom">
 										<div class="total">
 											<span>Total</span>
-											<span class="total-amount">$134.00</span>
+											<span class="total-amount">$<?= $tcash ?></span>
 										</div>
 										<a href="checkout.php" class="btn animate">Checkout</a>
 									</div>
@@ -218,12 +230,12 @@ session_start();
 											<ul class="nav main-menu menu navbar-nav">
 												<li class="active"><a href="./index.php">Home</a></li>
 												<li><a href="./shop.php">Shop</a></li>
-												<!-- <li><a href="./blog.php">Blog</a></li> -->
+												<li><a href="./blog.php">Blog</a></li>
 												<?php
 												if (!empty($_SESSION['uemail'])) {
 												?>
 													<li><a href="./cart.php">Cart</a></li>
-													<li><a href="./checkout.php">Checkout</a></li>
+													<li><a href="./orders.php">Orders</a></li>
 												<?php
 												}
 												?>

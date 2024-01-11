@@ -60,7 +60,7 @@ include("./include/sidebar.php");
                         <form id="form">
                             <div class="card-header">
                                 <h4>Checkout</h4>
-                                <a class="btn btn-primary text-right" href="./view-pos.php">View Checkout</a>
+                                <a class="btn btn-primary text-right" href="./view-pos.php">Back</a>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -103,7 +103,7 @@ include("./include/sidebar.php");
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary" name="sub">Submit</button>
+                                <button class="btn btn-primary" name="sub">Update</button>
                             </div>
                         </form>
                     </div>
@@ -198,11 +198,18 @@ include("./include/footer.php");
                                     text: "Data deleted!",
                                     icon: "success"
                                 });
-                                $(btn).closest("tr").fadeOut();
                                 showUpCart();
                                 showPOS();
+                            } else if (res == 3) {
+                                Swal.fire({
+                                    text: "Table is Empty!",
+                                    icon: "warning"
+                                });
                             } else {
-                                alert("Data couldn't be deleted.");
+                                Swal.fire({
+                                    text: "Data not deleted!",
+                                    icon: "error"
+                                });
                             }
                         }
                     });
@@ -275,17 +282,20 @@ include("./include/footer.php");
                             icon: 'error',
                             title: 'Invalid Stock Value!'
                         });
+                        showUpCart();
                     } else if (res == 2) {
                         console.log("Quantity changed!");
                         showUpCart();
                         showPOS();
                     } else if (res == 3) {
                         console.log("Quantity not changed!");
+                        showUpCart();
                     } else {
                         Toast.fire({
                             icon: 'warning',
                             title: 'Product Out of Stock!'
                         });
+                        showUpCart();
                     }
                 }
             });
@@ -310,16 +320,12 @@ include("./include/footer.php");
                             title: 'Please fill all the fields!'
                         })
                     } else if (res == 2) {
-                        $("#form").trigger("reset");
                         Toast.fire({
                             icon: 'success',
                             title: 'Data updated!'
                         });
                         showUpCart();
                         showPOS();
-                        setTimeout(() => {
-                            window.location.href = "./view-pos.php";
-                        }, 3500);
                     } else {
                         Toast.fire({
                             icon: 'error',

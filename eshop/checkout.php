@@ -205,7 +205,7 @@ include('./include/footer.php');
 					"action": "checkout"
 				},
 				success: function(res) {
-					alert(res);
+					// alert(res);
 					if (res == 1) {
 						Toast.fire({
 							icon: 'warning',
@@ -213,11 +213,17 @@ include('./include/footer.php');
 						});
 					} else if (res == 2) {
 						Toast.fire({
+							icon: 'warning',
+							title: 'One of the products out of stock!'
+						});
+						showCheckout();
+					} else if (res == 3) {
+						Toast.fire({
 							icon: 'success',
 							title: 'Your Order Has Been Processed! You will shortly receive an email.'
 						});
 						showCheckout();
-					} else if (res == 3) {
+					} else if (res == 4) {
 						Toast.fire({
 							icon: 'success',
 							title: 'There was an error sending Email! Your Order Has Been Processed.'

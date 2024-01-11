@@ -1,4 +1,5 @@
 <?php
+include("./include/connect.php");
 session_start();
 if (empty($_SESSION['email'])) {
     header('Location: ./login.php');
@@ -35,6 +36,7 @@ include("./include/sidebar.php");
                                 </div>
                                 <div id="check" class="form-group mt-4 mb-0 d-none">
                                     <label class="form-label mb-2">Select Modules:</label><br>
+                                    <input type="checkbox" value="Staff" name="ac_array[]">Staff<br>
                                     <input type="checkbox" value="Category" name="ac_array[]">Category<br>
                                     <input type="checkbox" value="Sub-Category" name="ac_array[]">Sub-Category<br>
                                     <input type="checkbox" value="Supplier" name="ac_array[]">Supplier<br>

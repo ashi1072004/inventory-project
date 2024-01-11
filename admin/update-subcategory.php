@@ -1,16 +1,16 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  $subid = $_GET['subid'];
-  $csql = "SELECT * FROM `subcategory` WHERE `subid` = '$subid' ";
-  $crun = mysqli_query($conn, $csql);
-  $fetch = mysqli_fetch_assoc($crun);
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+$subid = $_GET['subid'];
+$csql = "SELECT * FROM `subcategory` WHERE `subid` = '$subid' ";
+$crun = mysqli_query($conn, $csql);
+$fetch = mysqli_fetch_assoc($crun);
 
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -23,7 +23,7 @@
             <form id="form">
               <div class="card-header">
                 <h4>Update Sub-Category</h4>
-                <a class="btn btn-primary text-right" href="./view-subcategory.php">View Sub-Category</a>
+                <a class="btn btn-primary text-right" href="./view-subcategory.php">Back</a>
               </div>
               <div class="card-body">
                 <div class="form-group">
@@ -31,38 +31,36 @@
                   <select id="catid" class="form-control" name="catid" aria-describedby="invalid-ctg" required="">
                     <option value="">Select one</option>
                     <?php
-                            $catsql = "SELECT * FROM `category` ";
-                            $catrun = mysqli_query($conn, $catsql);
-                            while($cfetch = mysqli_fetch_assoc($catrun)){
-                              if($cfetch['cid']==$fetch['catid']){
-                              ?>
-                    <option value="<?php echo $cfetch['cid']?>" selected>
-                      <?php echo $cfetch['cname']?>
-                    </option>
+                    $catsql = "SELECT * FROM `category` ";
+                    $catrun = mysqli_query($conn, $catsql);
+                    while ($cfetch = mysqli_fetch_assoc($catrun)) {
+                      if ($cfetch['cid'] == $fetch['catid']) {
+                    ?>
+                        <option value="<?php echo $cfetch['cid'] ?>" selected>
+                          <?php echo $cfetch['cname'] ?>
+                        </option>
+                      <?php
+                      } else {
+                      ?>
+                        <option value="<?php echo $cfetch['cid'] ?>">
+                          <?php echo $cfetch['cname'] ?>
+                        </option>
                     <?php
-                              }else{
-                              ?>
-                    <option value="<?php echo $cfetch['cid']?>">
-                      <?php echo $cfetch['cname']?>
-                    </option>
-                    <?php        
-                              }
-                            }
-                            ?>
+                      }
+                    }
+                    ?>
                   </select>
                   <small id="invalid-ctg" class="form-text text-danger"></small>
                 </div>
-                <input type="hidden" class="form-control" name="subid" value="<?php echo $fetch['subid']?>">
+                <input type="hidden" class="form-control" name="subid" value="<?php echo $fetch['subid'] ?>">
                 <div class="form-group">
                   <label>Sub-Category Name</label>
-                  <input id="subname" type="text" class="form-control" name="subname"
-                    value="<?php echo $fetch['subname']?>" aria-describedby="invalid-name" required>
+                  <input id="subname" type="text" class="form-control" name="subname" value="<?php echo $fetch['subname'] ?>" aria-describedby="invalid-name" required>
                   <small id="invalid-name" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-0">
                   <label>Sub-Category Description</label>
-                  <textarea id="subdes" class="form-control" name="subdes" aria-describedby="invalid-des"
-                    required><?php echo $fetch['subdes']?></textarea>
+                  <textarea id="subdes" class="form-control" name="subdes" aria-describedby="invalid-des" required><?php echo $fetch['subdes'] ?></textarea>
                   <small id="invalid-des" class="form-text"></small>
                 </div>
               </div>
@@ -77,22 +75,22 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function(){
+  $(document).ready(function() {
     // Catgory ID
-    $("#catid").on("input", function(){
-      if(!checkid("#catid")){
+    $("#catid").on("input", function() {
+      if (!checkid("#catid")) {
         $('#catid').css("border", "1px solid red");
         $('#invalid-ctg').html("Please select a Category!");
-      } else{
+      } else {
         $('#catid').css("border", "");
         $('#invalid-ctg').html("");
       }
     });
     // Sub-category name
-    $("#subname").on("input", function(){
+    $("#subname").on("input", function() {
       if (!checkalpha("#subname")) {
         $('#subname').css("border", "1px solid red");
         $('#invalid-name').html("Invalid! only alphabets allowed");
@@ -102,7 +100,7 @@
       }
     });
     //Sub-Catgory description
-    $("#subdes").on("input", function () {
+    $("#subdes").on("input", function() {
       let subdes = $('#subdes').val();
       if (subdes.length < 3) {
         $('#subdes').css("border", "1px solid rgb(219, 219, 92)");
@@ -118,7 +116,7 @@
       }
     });
 
-    $('#form').on('submit', (e) => {    
+    $('#form').on('submit', (e) => {
       e.preventDefault();
       if (checkid("#catid") && checkalpha("#subname") && checkdesc("#subdes")) {
         let formdata = new FormData(form);
@@ -128,7 +126,7 @@
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             // alert(res);
             if (res == 1) {
               Toast.fire({
@@ -136,14 +134,10 @@
                 title: 'Please fill all the fields!'
               })
             } else if (res == 2) {
-              $("#form").trigger("reset");
               Toast.fire({
                 icon: 'success',
                 title: 'Data updated!'
               });
-              setTimeout(() => {
-                window.location.href = "./view-subcategory.php";
-              }, 3500);
             } else {
               Toast.fire({
                 icon: 'error',
@@ -160,4 +154,4 @@
       }
     });
   });
-</script> 
+</script>

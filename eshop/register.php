@@ -86,8 +86,8 @@ include('../admin/include/connect.php');
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Last Name<span>*</span></label>
-                                        <input type="text" id="ulname" name="ulname" aria-describedby="invalid-lname" required>
+                                        <label>Last Name</label>
+                                        <input type="text" id="ulname" name="ulname" aria-describedby="invalid-lname">
                                         <small id="invalid-lname" class="form-text text-danger"></small>
                                     </div>
                                 </div>
@@ -100,49 +100,49 @@ include('../admin/include/connect.php');
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Phone Number<span>*</span></label>
-                                        <input type="tel" id="umob" name="umob" aria-describedby="invalid-mob" required>
+                                        <label>Phone Number</label>
+                                        <input type="tel" id="umob" name="umob" aria-describedby="invalid-mob">
                                         <small id="invalid-mob" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Country<span>*</span></label>
-                                        <input type="text" name="country" id="country" aria-describedby="invalid-cn" required>
+                                        <label>Country</label>
+                                        <input type="text" name="country" id="country" aria-describedby="invalid-cn">
                                         <small id="invalid-cn" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>State / Divition<span>*</span></label>
-                                        <input type="text" name="state" id="state" aria-describedby="invalid-st" required>
+                                        <label>State / Divition</label>
+                                        <input type="text" name="state" id="state" aria-describedby="invalid-st">
                                         <small id="invalid-st" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>City<span>*</span></label>
-                                        <input type="text" name="city" id="city" aria-describedby="invalid-ct" required>
+                                        <label>City</label>
+                                        <input type="text" name="city" id="city" aria-describedby="invalid-ct">
                                         <small id="invalid-ct" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Postal Code<span>*</span></label>
-                                        <input type="text" id="pt_code" name="pt_code" aria-describedby="invalid-code" required>
+                                        <label>Postal Code</label>
+                                        <input type="text" id="pt_code" name="pt_code" aria-describedby="invalid-code">
                                         <small id="invalid-code" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Address Line 1<span>*</span></label>
-                                        <input type="text" id="add1" name="add1" aria-describedby="invalid-add1" required>
+                                        <label>Address Line 1</label>
+                                        <input type="text" id="add1" name="add1" aria-describedby="invalid-add1">
                                         <small id="invalid-add1" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Address Line 2<span>*</span></label>
+                                        <label>Address Line 2</label>
                                         <input type="text" id="add2" name="add2" aria-describedby="invalid-add2">
                                         <small id="invalid-add2" class="form-text text-danger"></small>
                                     </div>
@@ -258,10 +258,10 @@ include('../admin/include/connect.php');
             $('#form').on('submit', (e) => {
                 e.preventDefault();
 
-                if (checkalpha("#ufname") && checkalpha("#ulname") && checkemail("#uemail") && checkmob("#umob") && checkalpha("#country") && checkalpha("#state") && checkalpha("#city") && checkdesc("#add1") && checkadd("#add2") && checkptcode("#pt_code") && checkpass("#upass") && checkpass("#ucpass")) {
+                if (checkalpha("#ufname") && checkemail("#uemail") && checkpass("#upass") && checkpass("#ucpass")) {
                     let formdata = new FormData(form);
                     formdata.append("usub", true);
-                    console.log(formdata);
+                    // console.log(formdata);
                     $.ajax({
                         method: "POST",
                         url: "./ajax/user-register.php",
@@ -269,11 +269,11 @@ include('../admin/include/connect.php');
                         contentType: false,
                         processData: false,
                         success: function(res) {
-                            // alert(res);
+                            alert(res);
                             if (res == 1) {
                                 Toast.fire({
                                     icon: 'warning',
-                                    title: 'Please fill all the fields!'
+                                    title: 'Please fill required fields!'
                                 });
                             } else if (res == 2) {
                                 Toast.fire({
@@ -286,7 +286,9 @@ include('../admin/include/connect.php');
                                     icon: 'success',
                                     title: 'Data inserted!'
                                 });
-                                window.location.href = './index.php';
+                                setTimeout(() => {
+                                    window.location.href = './login.php';
+                                }, 1000);
                             } else if (res == 5) {
                                 Toast.fire({
                                     icon: 'error',

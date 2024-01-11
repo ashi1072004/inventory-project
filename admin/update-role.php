@@ -23,11 +23,11 @@ include("./include/sidebar.php");
                         <form id="form">
                             <div class="card-header">
                                 <h4>Update Role</h4>
-                                <a class="btn btn-primary text-right" href="./view-role.php">View Roles</a>
+                                <a class="btn btn-primary text-right" href="./view-role.php">Back</a>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <input type="hidden" class="form-control" name="cid" value="<?php echo $fetch['rid'] ?>">
+                                    <input type="hidden" class="form-control" name="rid" value="<?php echo $fetch['rid'] ?>">
                                     <label for="rname">Role Name</label>
                                     <input id="rname" type="text" class="form-control" name="rname" aria-describedby="invalid-rname" value="<?php echo $fetch['rname'] ?>" required="">
                                     <small id="invalid-rname" class="form-text text-danger"></small>
@@ -38,13 +38,11 @@ include("./include/sidebar.php");
                                         <option value="none" selected>Select One</option>
                                         <?php
                                         if ($fetch['raccess'] == 'custom') {
-                                            $class = 'd-block';
                                         ?>
                                             <option value="all">All</option>
                                             <option value="custom" selected>Custom</option>
                                         <?php
                                         } else {
-                                            $class = 'd-none';
                                         ?>
                                             <option value="all" selected>All</option>
                                             <option value="custom">Custom</option>
@@ -53,25 +51,31 @@ include("./include/sidebar.php");
                                         ?>
                                     </select>
                                 </div>
-                                <div id="check" class="form-group mt-4 mb-0 <?= $class ?>">
+                                <div id="check" class="form-group mt-4 mb-0">
                                     <label class="form-label mb-2">Select Modules:</label><br>
                                     <?php
-                                    $roles = unserialize($fetch['ac_array']);
-                                    $all_roles = array('Category', 'Sub-Category', 'Supplier', 'Quantity/Measurement', 'Product', 'Register User', 'POS', 'Online Orders', 'Roles');
-                                    foreach ($all_roles as $value) {
-                                        $isChecked = in_array($value, $roles) ? 'checked' : '';
-                                        echo '<input type="checkbox" value="' . htmlspecialchars($value) . '" name="ac_array[]" ' . $isChecked . '>' . htmlspecialchars($value) . '<br>';
+                                    if ($fetch['raccess'] == 'custom') {
+                                        $roles = unserialize($fetch['ac_array']);
+                                        $all_roles = array('Staff', 'Category', 'Sub-Category', 'Supplier', 'Quantity/Measurement', 'Product', 'Register User', 'POS', 'Online Orders', 'Roles');
+                                        foreach ($all_roles as $value) {
+                                            $isChecked = in_array($value, $roles) ? 'checked' : '';
+                                            echo '<input type="checkbox" value="' . htmlspecialchars($value) . '" name="ac_array[]" ' . $isChecked . '>' . htmlspecialchars($value) . '<br>';
+                                        }
+                                    } else {
+                                    ?>
+                                        <input type="checkbox" value="Staff" name="ac_array[]">Staff<br>
+                                        <input type="checkbox" value="Category" name="ac_array[]">Category<br>
+                                        <input type="checkbox" value="Sub-Category" name="ac_array[]">Sub-Category<br>
+                                        <input type="checkbox" value="Supplier" name="ac_array[]">Supplier<br>
+                                        <input type="checkbox" value="Quantity/Measurement" name="ac_array[]">Quantity/Measurement<br>
+                                        <input type="checkbox" value="Product" name="ac_array[]">Product<br>
+                                        <input type="checkbox" value="" name="ac_array[]" id="Register User">Register User<br>
+                                        <input type="checkbox" value="POS" name="ac_array[]">POS<br>
+                                        <input type="checkbox" value="Online Orders" name="ac_array[]">Online Orders<br>
+                                        <input type="checkbox" value="Roles" name="ac_array[]">Roles<br>
+                                    <?php
                                     }
                                     ?>
-                                    <!-- <input type="checkbox" value="Category" name="ac_array[]">Category<br>
-                                    <input type="checkbox" value="Sub-Category" name="ac_array[]">Sub-Category<br>
-                                    <input type="checkbox" value="Supplier" name="ac_array[]">Supplier<br>
-                                    <input type="checkbox" value="Quantity/Measurement" name="ac_array[]">Quantity/Measurement<br>
-                                    <input type="checkbox" value="Product" name="ac_array[]">Product<br>
-                                    <input type="checkbox" value="" name="ac_array[]" id="Register User">Register User<br>
-                                    <input type="checkbox" value="POS" name="ac_array[]">POS<br>
-                                    <input type="checkbox" value="Online Orders" name="ac_array[]">Online Orders<br>
-                                    <input type="checkbox" value="Roles" name="ac_array[]">Roles<br> -->
                                 </div>
                             </div>
                             <div class="card-footer text-right">
@@ -91,8 +95,13 @@ include("./include/footer.php");
 <script>
     $(document).ready(function() {
         // show checkboxes
+        if ($("#raccess").val() === "custom") {
+            $("#check").removeClass("d-none");
+        } else {
+            $("#check").addClass("d-none");
+        }
         $("#raccess").on("change", function() {
-            if (!($(this).val() === "custom")) {
+            if (!($("#raccess").val() === "custom")) {
                 $("#check").addClass("d-none");
             } else {
                 $("#check").removeClass("d-none");
@@ -111,7 +120,7 @@ include("./include/footer.php");
         // Form Submit
         $("#form").on("submit", function(e) {
             e.preventDefault();
-            if (checkalpha("#cname") && checkdesc("#cdes")) {
+            if (checkalpha("#rname")) {
                 let formdata = new FormData(form);
                 $.ajax({
                     method: "POST",
@@ -120,20 +129,18 @@ include("./include/footer.php");
                     contentType: false,
                     processData: false,
                     success: function(res) {
+                        // alert(res);
                         if (res == 1) {
                             Toast.fire({
                                 icon: 'warning',
                                 title: 'Please fill all the fields!'
                             })
                         } else if (res == 2) {
-                            $("#form").trigger("reset");
+                            // $("#form").trigger("reset");
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Data updated!'
                             });
-                            setTimeout(() => {
-                                window.location.href = "./view-category.php";
-                            }, 3500);
                         } else {
                             Toast.fire({
                                 icon: 'error',

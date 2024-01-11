@@ -23,9 +23,9 @@ include("./include/sidebar.php");
                                     <thead>
                                         <tr>
                                             <th>Invoice</th>
+                                            <th>Email</th>
                                             <th>Customer Name</th>
                                             <th>Contact No.</th>
-                                            <th>Email</th>
                                             <th>Country</th>
                                             <th>State</th>
                                             <th>City</th>
@@ -35,7 +35,7 @@ include("./include/sidebar.php");
                                             <th>Total Cash</th>
                                             <th>Order Date</th>
                                             <th>Status</th>
-                                            <th class="text-center">Actions</th>
+                                            <th colspan="3" class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orders-table">
@@ -85,7 +85,10 @@ include("./include/footer.php");
                                 });
                                 $(btn).closest("tr").fadeOut();
                             } else {
-                                alert("Order couldn't be canceled.");
+                                Swal.fire({
+                                    text: "Order not canceled.",
+                                    icon: "error"
+                                });
                             }
                         }
                     });

@@ -1,5 +1,35 @@
 <?php
 include("../include/connect.php");
+// ----------------------------- Staff --------------------------------
+if (isset($_POST['asub'])) {
+    $aname = mysqli_real_escape_string($conn, $_POST['aname']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $cpass = mysqli_real_escape_string($conn, $_POST['cpass']);
+    $roleid = mysqli_real_escape_string($conn, $_POST['roleid']);
+    // print_r($_POST);
+    if ($aname == "" || $email == "" || $password == "" || $cpass == "" || empty($roleid)) {
+        echo 1; //fields cannot be empty
+    } else {
+        $select = "SELECT * FROM `admin` WHERE `email`='$email' ";
+        $arun = mysqli_query($conn, $select);
+        if (mysqli_num_rows($arun) > 0) {
+            echo 2; //email already exists
+        } else {
+            if ($password == $cpass) {
+                $insert = "INSERT INTO `admin`(`roleid`, `aname`, `email`, `password`)VALUES('$roleid', '$aname', '$email', '$password')";
+                $run = mysqli_query($conn, $insert);
+                if ($run) {
+                    echo 3; //inserted
+                } else {
+                    echo 4; // not inserted
+                }
+            } else {
+                echo 5; // Passwords don't match
+            }
+        }
+    }
+}
 // ----------------------------- Role --------------------------------
 if (!empty($_POST['rname'])) {
     $rname = mysqli_real_escape_string($conn, $_POST['rname']);
@@ -49,7 +79,7 @@ if (isset($_POST['usub'])) {
             echo 2; //email already exists
         } else {
             if ($upass == $ucpass) {
-                $insert = "INSERT INTO `user`(`ufname`, `ulname`, `uemail`, `umob`, `country`, `state`, `city`, `add1`, `add2`, `pt_code`, `upass`, `ucpass`, `ustatus`, `udate`)VALUES('$ufname', '$ulname', '$uemail', '$umob', '$country', '$state', '$city', '$add1', '$add2', '$pt_code', '$upass', '$ucpass', '$ustatus','$udate')";
+                $insert = "INSERT INTO `user`(`ufname`, `ulname`, `uemail`, `umob`, `country`, `state`, `city`, `add1`, `add2`, `pt_code`, `upass`, `ustatus`, `udate`)VALUES('$ufname', '$ulname', '$uemail', '$umob', '$country', '$state', '$city', '$add1', '$add2', '$pt_code', '$upass', '$ustatus','$udate')";
                 $run = mysqli_query($conn, $insert);
                 if ($run) {
                     echo 3; //inserted

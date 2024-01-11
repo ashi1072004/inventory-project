@@ -24,46 +24,46 @@ include("./include/sidebar.php");
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>View Roles</h4>
-                            <a class="btn btn-primary text-right" href="./add-role.php">Add a Role</a>
+                            <h4>View Staff</h4>
+                            <a class="btn btn-primary text-right" href="./add-staff.php">Add Staff</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>Role Name</th>
-                                            <th>Role Access</th>
-                                            <th>Access To</th>
+                                            <th>Staff Name</th>
+                                            <th>Staff Email</th>
+                                            <th>Staff Status</th>
+                                            <th>Staff Role</th>
+                                            <th>Date</th>
                                             <th colspan='2'>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $ctg = "SELECT * FROM `role` ORDER BY `rname`";
-                                        $run = mysqli_query($conn, $ctg);
+                                        $sup = "SELECT * FROM `admin` ad INNER JOIN `role` rl ON ad.roleid=rl.rid ";
+                                        $run = mysqli_query($conn, $sup);
                                         while ($fetch = mysqli_fetch_assoc($run)) {
                                         ?>
                                             <tr>
                                                 <td>
+                                                    <?php echo $fetch['aname'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $fetch['email'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $fetch['status'] ?>
+                                                </td>
+                                                <td>
                                                     <?php echo $fetch['rname'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $fetch['raccess'] ?>
+                                                    <?php echo $fetch['date'] ?>
                                                 </td>
-                                                <td>
-                                                    <?php
-                                                    if (!($fetch['ac_array'] == '')) {
-                                                        $roles = unserialize($fetch['ac_array']);
-                                                        echo implode(', ', array_values($roles));
-                                                    } else {
-                                                        echo $fetch['ac_array'];
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><a href="./update-role.php?rid=<?php echo $fetch['rid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
-                                                <td><button data-id="<?php echo $fetch['rid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
-                                                <!-- <script>feather.replace()</script> -->
+                                                <td><a href="./update-staff.php?adid=<?php echo $fetch['adid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
+                                                <td><button data-id="<?php echo $fetch['adid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
                                             </tr>
                                         <?php
                                         }
@@ -83,7 +83,6 @@ include("./include/footer.php");
 ?>
 <script>
     $(document).ready(function() {
-        // del role
         $(document).on("click", ".del", function() {
             Swal.fire({
                 title: "Are you sure?",
@@ -95,17 +94,17 @@ include("./include/footer.php");
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let rid = $(this).data("id");
-                    // alert(rid);
+                    let aid = $(this).data("id");
+                    // alert(aid);
                     let btn = this;
                     $.ajax({
                         method: "GET",
                         url: "./ajax/delete.php",
                         data: {
-                            "delrid": rid
+                            "delaid": aid
                         },
                         success: function(res) {
-                            // alert(res);
+                            alert(res);
                             if (res == 1) {
                                 Swal.fire({
                                     title: "Deleted!",

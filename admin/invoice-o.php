@@ -29,9 +29,17 @@ $fetch = mysqli_fetch_assoc($run);
                                 <div class="col-md-6">
                                     <address>
                                         <strong>Billed To:</strong><br>
-                                        <?php echo $fetch['ufname'] . " " . $fetch['ulname'] ?><br>
-                                        <?php echo $fetch['uemail'] ?><br>
-                                        <?php echo $fetch['umob'] ?><br>
+                                        <?php
+                                        $uemail = $fetch['uemail'];
+                                        $ucsql = "SELECT * FROM `user` WHERE `uemail`='$uemail' ";
+                                        $ucrun = mysqli_query($conn, $ucsql);
+                                        if (mysqli_num_rows($ucrun) > 0) {
+                                            $ufetch = mysqli_fetch_assoc($ucrun);
+                                            echo $ufetch['ufname'] . " " . $ufetch['ulname'] . "<br>";
+                                            echo $ufetch['umob'] . "<br>";
+                                        }
+                                        ?>
+                                        <?= $uemail ?><br>
                                     </address>
                                 </div>
                             </div>

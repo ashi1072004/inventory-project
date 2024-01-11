@@ -1,10 +1,11 @@
 <?php
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -22,18 +23,17 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="cname">Category Name</label>
-                  <input id="cname" type="text" class="form-control" name="cname" aria-describedby="invalid-cname"
-                    required="">
+                  <input id="cname" type="text" class="form-control" name="cname" aria-describedby="invalid-cname" required="">
                   <small id="invalid-cname" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-0">
                   <label for="cdes">Category Description</label>
-                  <textarea id="cdes" class="form-control" name="cdes" aria-describedby="invalid-cdes"
-                    required=""></textarea>
+                  <textarea id="cdes" class="form-control" name="cdes" aria-describedby="invalid-cdes" required=""></textarea>
                   <small id="invalid-cdes" class="form-text"></small>
                 </div>
               </div>
-              <?php //echo $cname." ".$cdes." ".$cdate;?>
+              <?php //echo $cname." ".$cdes." ".$cdate;
+              ?>
               <div class="card-footer text-right">
                 <button class="btn btn-primary" name="catsub">Submit</button>
               </div>
@@ -49,9 +49,9 @@
 include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     // Catgory name
-    $("#cname").on("input", function () {
+    $("#cname").on("input", function() {
       if (!checkalpha("#cname")) {
         $('#cname').css("border", "1px solid red");
         $('#invalid-cname').html("Invalid! only alphabets allowed");
@@ -61,7 +61,7 @@ include("./include/footer.php");
       }
     });
     //Catgory description
-    $("#cdes").on("input", function () {
+    $("#cdes").on("input", function() {
       let cdes = $('#cdes').val();
       let data = checkdesc("#cdes");
       if (cdes.length < 3) {
@@ -78,7 +78,7 @@ include("./include/footer.php");
       }
     });
     // Form Submit
-    $("#form").on("submit", function (e) {
+    $("#form").on("submit", function(e) {
       e.preventDefault();
       if (checkalpha("#cname") && checkdesc("#cdes")) {
         let formdata = new FormData(form);
@@ -89,7 +89,7 @@ include("./include/footer.php");
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             // alert(res);
             if (res == 1) {
               Toast.fire({

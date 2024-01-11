@@ -1,16 +1,16 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  $pid = $_GET['pid'];
-  $psql = "SELECT * FROM `product` WHERE `pid` = '$pid' ";
-  $prun = mysqli_query($conn, $psql);
-  $fetch = mysqli_fetch_assoc($prun);
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+$pid = $_GET['pid'];
+$psql = "SELECT * FROM `product` WHERE `pid` = '$pid' ";
+$prun = mysqli_query($conn, $psql);
+$fetch = mysqli_fetch_assoc($prun);
 
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -23,7 +23,7 @@
             <form id="form">
               <div class="card-header">
                 <h4>Update Product</h4>
-                <a class="btn btn-primary text-right" href="./view-product.php">View Product</a>
+                <a class="btn btn-primary text-right" href="./view-product.php">Back</a>
               </div>
               <div class="card-body">
                 <div class="form-group">
@@ -31,24 +31,24 @@
                   <select id="pcat" class="form-control" name="pcat" aria-describedby="invalid-pcat" required="">
                     <option value="">Select one</option>
                     <?php
-                            $catsql = "SELECT * FROM `category` ";
-                            $catrun = mysqli_query($conn, $catsql);
-                            while($cfetch = mysqli_fetch_assoc($catrun)){
-                                if($cfetch['cid']==$fetch['pcat']){
-                                ?>
-                    <option value="<?php echo $cfetch['cid']?>" selected>
-                      <?php echo $cfetch['cname']?>
-                    </option>
+                    $catsql = "SELECT * FROM `category` ";
+                    $catrun = mysqli_query($conn, $catsql);
+                    while ($cfetch = mysqli_fetch_assoc($catrun)) {
+                      if ($cfetch['cid'] == $fetch['pcat']) {
+                    ?>
+                        <option value="<?php echo $cfetch['cid'] ?>" selected>
+                          <?php echo $cfetch['cname'] ?>
+                        </option>
+                      <?php
+                      } else {
+                      ?>
+                        <option value="<?php echo $cfetch['cid'] ?>">
+                          <?php echo $cfetch['cname'] ?>
+                        </option>
                     <?php
-                                }else{
-                                ?>
-                    <option value="<?php echo $cfetch['cid']?>">
-                      <?php echo $cfetch['cname']?>
-                    </option>
-                    <?php        
-                                }
-                            }
-                            ?>
+                      }
+                    }
+                    ?>
                   </select>
                   <small id="invalid-pcat" class="form-text text-danger"></small>
                 </div>
@@ -57,24 +57,24 @@
                   <select id="psubcat" class="form-control" name="psubcat" aria-describedby="invalid-psubcat" required="">
                     <option value="">Select one</option>
                     <?php
-                            $subsql = "SELECT * FROM `subcategory` ";
-                            $subrun = mysqli_query($conn, $subsql);
-                            while($sfetch = mysqli_fetch_assoc($subrun)){
-                                if($sfetch['subid']==$fetch['psubcat']){
-                                ?>
-                    <option value="<?php echo $sfetch['subid']?>" selected>
-                      <?php echo $sfetch['subname']?>
-                    </option>
+                    $subsql = "SELECT * FROM `subcategory` ";
+                    $subrun = mysqli_query($conn, $subsql);
+                    while ($sfetch = mysqli_fetch_assoc($subrun)) {
+                      if ($sfetch['subid'] == $fetch['psubcat']) {
+                    ?>
+                        <option value="<?php echo $sfetch['subid'] ?>" selected>
+                          <?php echo $sfetch['subname'] ?>
+                        </option>
+                      <?php
+                      } else {
+                      ?>
+                        <option value="<?php echo $sfetch['subid'] ?>">
+                          <?php echo $sfetch['subname'] ?>
+                        </option>
                     <?php
-                                }else{
-                                ?>
-                    <option value="<?php echo $sfetch['subid']?>">
-                      <?php echo $sfetch['subname']?>
-                    </option>
-                    <?php        
-                                }
-                            }
-                            ?>
+                      }
+                    }
+                    ?>
                   </select>
                   <small id="invalid-psubcat" class="form-text text-danger"></small>
                 </div>
@@ -83,51 +83,51 @@
                   <select id="psup" class="form-control" name="psup" aria-describedby="invalid-psup" required="">
                     <option value="">Select one</option>
                     <?php
-                            $supsql = "SELECT * FROM `supplier` ";
-                            $suprun = mysqli_query($conn, $supsql);
-                            while($supfetch = mysqli_fetch_assoc($suprun)){
-                                if($supfetch['supid']==$fetch['psup']){
-                                ?>
-                    <option value="<?php echo $supfetch['supid']?>" selected>
-                      <?php echo $supfetch['supname']?>
-                    </option>
+                    $supsql = "SELECT * FROM `supplier` ";
+                    $suprun = mysqli_query($conn, $supsql);
+                    while ($supfetch = mysqli_fetch_assoc($suprun)) {
+                      if ($supfetch['supid'] == $fetch['psup']) {
+                    ?>
+                        <option value="<?php echo $supfetch['supid'] ?>" selected>
+                          <?php echo $supfetch['supname'] ?>
+                        </option>
+                      <?php
+                      } else {
+                      ?>
+                        <option value="<?php echo $supfetch['supid'] ?>">
+                          <?php echo $supfetch['supname'] ?>
+                        </option>
                     <?php
-                                }else{
-                                ?>
-                    <option value="<?php echo $supfetch['supid']?>">
-                      <?php echo $supfetch['supname']?>
-                    </option>
-                    <?php        
-                                }
-                            }
-                            ?>
+                      }
+                    }
+                    ?>
                   </select>
                   <small id="invalid-psup" class="form-text text-danger"></small>
                 </div>
-                <input type="hidden" class="form-control" name="pid" value="<?php echo $fetch['pid']?>">
+                <input type="hidden" class="form-control" name="pid" value="<?php echo $fetch['pid'] ?>">
                 <div class="form-group">
                   <label>Product Code</label>
-                  <input type="text" id="pcode" class="form-control" name="pcode" value="<?php echo $fetch['pcode']?>" aria-describedby="invalid-pcode" required="">
+                  <input type="text" id="pcode" class="form-control" name="pcode" value="<?php echo $fetch['pcode'] ?>" aria-describedby="invalid-pcode" required="">
                   <small id="invalid-pcode" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Name</label>
-                  <input type="text" id="pname" class="form-control" name="pname" value="<?php echo $fetch['pname']?>" aria-describedby="invalid-pname" required="">
+                  <input type="text" id="pname" class="form-control" name="pname" value="<?php echo $fetch['pname'] ?>" aria-describedby="invalid-pname" required="">
                   <small id="invalid-pname" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Description</label>
-                  <textarea id="pdes" class="form-control" name="pdes" aria-describedby="invalid-pdes" required=""><?php echo $fetch['pdes']?></textarea>
+                  <textarea id="pdes" class="form-control" name="pdes" aria-describedby="invalid-pdes" required=""><?php echo $fetch['pdes'] ?></textarea>
                   <small id="invalid-pdes" class="form-text"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Cost Price</label>
-                  <input type="number" id="pcost" class="form-control" name="pcost" value="<?php echo $fetch['pcost']?>" aria-describedby="invalid-pcost" required="">
+                  <input type="number" id="pcost" class="form-control" name="pcost" value="<?php echo $fetch['pcost'] ?>" aria-describedby="invalid-pcost" required="">
                   <small id="invalid-pcost" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Sale Price</label>
-                  <input type="number" id="psale" class="form-control" name="psale" value="<?php echo $fetch['psale']?>" aria-describedby="invalid-psale" required="">
+                  <input type="number" id="psale" class="form-control" name="psale" value="<?php echo $fetch['psale'] ?>" aria-describedby="invalid-psale" required="">
                   <small id="invalid-psale" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
@@ -135,53 +135,52 @@
                   <select id="pmes" class="form-control" name="pmes" aria-describedby="invalid-pmes" required="">
                     <option value="">Select one</option>
                     <?php
-                            $msql = "SELECT * FROM `measure` ";
-                            $mrun = mysqli_query($conn, $msql);
-                            while($mfetch = mysqli_fetch_assoc($mrun)){
-                                if($mfetch['mid']==$fetch['pmes']){
-                                ?>
-                    <option value="<?php echo $mfetch['mid']?>" selected>
-                      <?php echo $mfetch['mname']?>
-                    </option>
+                    $msql = "SELECT * FROM `measure` ";
+                    $mrun = mysqli_query($conn, $msql);
+                    while ($mfetch = mysqli_fetch_assoc($mrun)) {
+                      if ($mfetch['mid'] == $fetch['pmes']) {
+                    ?>
+                        <option value="<?php echo $mfetch['mid'] ?>" selected>
+                          <?php echo $mfetch['mname'] ?>
+                        </option>
+                      <?php
+                      } else {
+                      ?>
+                        <option value="<?php echo $mfetch['mid'] ?>">
+                          <?php echo $mfetch['mname'] ?>
+                        </option>
                     <?php
-                                }else{
-                                ?>
-                    <option value="<?php echo $mfetch['mid']?>">
-                      <?php echo $mfetch['mname']?>
-                    </option>
-                    <?php        
-                                }
-                            }
-                            ?>
+                      }
+                    }
+                    ?>
                   </select>
                   <small id="invalid-pmes" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Stock</label>
-                  <input type="number" id="pstock" class="form-control" name="pstock" value="<?php echo $fetch['pstock']?>" aria-describedby="invalid-pstock" required="">
+                  <input type="number" id="pstock" class="form-control" name="pstock" value="<?php echo $fetch['pstock'] ?>" aria-describedby="invalid-pstock" required="">
                   <small id="invalid-pstock" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                   <label>Product Pic</label><br>
-                  <span data-feather="image" width="70" height="70" style="cursor:pointer"
-                    onclick="$('#inputField').click()"></span>
+                  <span data-feather="image" width="70" height="70" style="cursor:pointer" onclick="$('#inputField').click()"></span>
                   <input type="file" multiple name="ppic[]" id="inputField" style="display:none">
                 </div>
                 <div class="form-group">
                   <label>Product Status</label><br>
                   <?php
-                          if($fetch['status']=='online'){
-                        ?>
-                  <input type="radio" class="mx-2" name="status" value="online" required="" checked>Online
-                  <input type="radio" class="mx-2" name="status" value="offline" required="">Offline
+                  if ($fetch['status'] == 'online') {
+                  ?>
+                    <input type="radio" class="mx-2" name="status" value="online" required="" checked>Online
+                    <input type="radio" class="mx-2" name="status" value="offline" required="">Offline
                   <?php
-                          }else{
-                        ?>
-                  <input type="radio" class="mx-2" name="status" value="online" required="">Online
-                  <input type="radio" class="mx-2" name="status" value="offline" required="" checked>Offline
+                  } else {
+                  ?>
+                    <input type="radio" class="mx-2" name="status" value="online" required="">Online
+                    <input type="radio" class="mx-2" name="status" value="offline" required="" checked>Offline
                   <?php
-                          }
-                        ?>
+                  }
+                  ?>
                 </div>
               </div>
               <div class="card-footer text-right">
@@ -195,52 +194,52 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
   $(document).ready(function() {
     // Catgory ID
-    $("#pcat").on("input", function(){
-      if(!checkid("#pcat")){
+    $("#pcat").on("input", function() {
+      if (!checkid("#pcat")) {
         $('#pcat').css("border", "1px solid red");
         $('#invalid-pcat').html("Please select a Category!");
-      } else{
+      } else {
         $('#pcat').css("border", "");
         $('#invalid-pcat').html("");
       }
     });
     // Sub-Catgory ID
-    $("#psubcat").on("input", function(){
-      if(!checkid("#psubcat")){
+    $("#psubcat").on("input", function() {
+      if (!checkid("#psubcat")) {
         $('#psubcat').css("border", "1px solid red");
         $('#invalid-psubcat').html("Please select a Sub Category!");
-      } else{
+      } else {
         $('#psubcat').css("border", "");
         $('#invalid-psubcat').html("");
       }
     });
     // Supplier ID
-    $("#psup").on("input", function(){
-      if(!checkid("#psup")){
+    $("#psup").on("input", function() {
+      if (!checkid("#psup")) {
         $('#psup').css("border", "1px solid red");
         $('#invalid-psup').html("Please select a Supplier!");
-      } else{
+      } else {
         $('#psup').css("border", "");
         $('#invalid-psup').html("");
       }
     });
     // Quantity/Measurement ID
-    $("#pmes").on("input", function(){
-      if(!checkid("#pmes")){
+    $("#pmes").on("input", function() {
+      if (!checkid("#pmes")) {
         $('#pmes').css("border", "1px solid red");
         $('#invalid-pmes').html("Please select a Quantity/Measurement!");
-      } else{
+      } else {
         $('#pmes').css("border", "");
         $('#invalid-pmes').html("");
       }
     });
     // Product code
-    $("#pcode").on("input", function(){
+    $("#pcode").on("input", function() {
       if (!checkcode("#pcode")) {
         $('#pcode').css("border", "1px solid red");
         $('#invalid-pcode').html("Product code should be numeric and its length should be 12 characters");
@@ -250,7 +249,7 @@
       }
     });
     // Product name
-    $("#pname").on("input", function(){
+    $("#pname").on("input", function() {
       if (!checkalpha("#pname")) {
         $('#pname').css("border", "1px solid red");
         $('#invalid-pname').html("Invalid! only alphabets allowed");
@@ -260,7 +259,7 @@
       }
     });
     //Product description
-    $("#pdes").on("input", function () {
+    $("#pdes").on("input", function() {
       let pdes = $('#pdes').val();
       if (pdes.length < 3) {
         $('#pdes').css("border", "1px solid rgb(219, 219, 92)");
@@ -276,7 +275,7 @@
       }
     });
     // Product cost
-    $("#pcost").on("input", function(){
+    $("#pcost").on("input", function() {
       if (!checkcost("#pcost")) {
         $('#pcost').css("border", "1px solid red");
         $('#invalid-pcost').html("Invalid! Product cost can be upto 1000000000");
@@ -286,7 +285,7 @@
       }
     });
     // Product sale
-    $("#psale").on("input", function(){
+    $("#psale").on("input", function() {
       if (!checkcost("#psale")) {
         $('#psale').css("border", "1px solid red");
         $('#invalid-psale').html("Invalid! Product sale price can be upto 1000000000");
@@ -296,7 +295,7 @@
       }
     });
     // Product stock
-    $("#pstock").on("input", function(){
+    $("#pstock").on("input", function() {
       if (!checkstock("#pstock")) {
         $('#pstock').css("border", "1px solid red");
         $('#invalid-pstock').html("Invalid! Product stock can be upto 1000");
@@ -316,7 +315,7 @@
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             // alert(res);
             if (res == 1) {
               Toast.fire({
@@ -324,28 +323,20 @@
                 title: 'Please fill all the fields!'
               })
             } else if (res == 2) {
-              $("#form").trigger("reset");
               Toast.fire({
                 icon: 'success',
                 title: 'Product Updated with New Pics!'
               });
-              setTimeout(() => {
-                window.location.href = "./view-product.php";
-              }, 3500);
             } else if (res == 3) {
               Toast.fire({
                 icon: 'error',
                 title: 'Product Not Updated!'
               })
             } else if (res == 5) {
-              $("#form").trigger("reset");
               Toast.fire({
                 icon: 'success',
                 title: 'Product Updated with Old Pics!'
               });
-              setTimeout(() => {
-                window.location.href = "./view-product.php";
-              }, 3500);
             } else {
               Toast.fire({
                 icon: 'warning',

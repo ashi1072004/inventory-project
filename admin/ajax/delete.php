@@ -1,6 +1,17 @@
 <?php
 include("../include/connect.php");
 
+// Delete Staff
+if (isset($_GET['delaid'])) {
+    $aid = $_GET['delaid'];
+    $del = "DELETE FROM `admin` WHERE `aid` = '$aid' ";
+    $drun = mysqli_query($conn, $del);
+    if ($drun) {
+        echo 1;
+    } else {
+        echo 2;
+    }
+}
 // Delete Order
 if (isset($_GET['deloid'])) {
     $invoice = $_GET['deloid'];

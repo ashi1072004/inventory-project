@@ -95,7 +95,7 @@
           success: function(res) {
             // alert(res);
             if (res == 1) {
-              window.location.href = "./index.php";
+              history.back();
             } else {
               Toast.fire({
                 icon: 'error',

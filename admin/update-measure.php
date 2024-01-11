@@ -1,16 +1,16 @@
 <?php
-  include("./include/connect.php");
-  session_start();
-  if(empty($_SESSION['email'])){
-    header('Location: ./login.php');
-  }
-  $mid = $_GET['mid'];
-  $msql = "SELECT * FROM `measure` WHERE `mid` = '$mid' ";
-  $mrun = mysqli_query($conn, $msql);
-  $fetch = mysqli_fetch_assoc($mrun);
+include("./include/connect.php");
+session_start();
+if (empty($_SESSION['email'])) {
+  header('Location: ./login.php');
+}
+$mid = $_GET['mid'];
+$msql = "SELECT * FROM `measure` WHERE `mid` = '$mid' ";
+$mrun = mysqli_query($conn, $msql);
+$fetch = mysqli_fetch_assoc($mrun);
 
-  include("./include/header.php");
-  include("./include/sidebar.php");
+include("./include/header.php");
+include("./include/sidebar.php");
 ?>
 
 <!-- Main Content -->
@@ -23,18 +23,18 @@
             <form id="form">
               <div class="card-header">
                 <h4>Update Quantity/Measurement</h4>
-                <a class="btn btn-primary text-right" href="./view-measure.php">View Quantity/Measurement</a>
+                <a class="btn btn-primary text-right" href="./view-measure.php">Back</a>
               </div>
               <div class="card-body">
-                <input type="hidden" class="form-control" name="mid" value="<?php echo $fetch['mid']?>">
+                <input type="hidden" class="form-control" name="mid" value="<?php echo $fetch['mid'] ?>">
                 <div class="form-group">
                   <label>Quantity/Measurement Name</label>
-                  <input type="text" id="mname" class="form-control" name="mname" value="<?php echo $fetch['mname']?>" aria-describedby="invalid-name" required>
+                  <input type="text" id="mname" class="form-control" name="mname" value="<?php echo $fetch['mname'] ?>" aria-describedby="invalid-name" required>
                   <small id="invalid-name" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-0">
                   <label>Quantity/Measurement Description</label>
-                  <textarea id="mdes" class="form-control" name="mdes" aria-describedby="invalid-des"><?php echo $fetch['mdes']?></textarea>
+                  <textarea id="mdes" class="form-control" name="mdes" aria-describedby="invalid-des"><?php echo $fetch['mdes'] ?></textarea>
                   <small id="invalid-des" class="form-text"></small>
                 </div>
               </div>
@@ -49,12 +49,12 @@
   </section>
 </div>
 <?php
-  include("./include/footer.php");
+include("./include/footer.php");
 ?>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     // Quantity/Measurement Name
-    $("#mname").on("input", function () {
+    $("#mname").on("input", function() {
       if (!checkalpha("#mname")) {
         $('#mname').css("border", "1px solid red");
         $('#invalid-name').html("Invalid! only alphabets allowed");
@@ -67,7 +67,7 @@
     function checkmdes(aid) {
       return $(aid).val().match(/^[a-zA-Z0-9 .'"?!,&()@_\-\\n\\r\\s]*$/);
     }
-    $("#mdes").on("input", function () {
+    $("#mdes").on("input", function() {
       if (!checkmdes("#mdes")) {
         $('#mdes').css("border", "1px solid red");
         $('#invalid-des').css("color", "red");
@@ -88,21 +88,17 @@
           data: formdata,
           contentType: false,
           processData: false,
-          success: function (res) {
+          success: function(res) {
             if (res == 1) {
               Toast.fire({
                 icon: 'warning',
                 title: 'Please insert Quantity/Measurement Name!'
               })
             } else if (res == 2) {
-              $("#form").trigger("reset");
               Toast.fire({
                 icon: 'success',
                 title: 'Data updated!'
               });
-              setTimeout(() => {
-                window.location.href = "./view-measure.php";
-              }, 3500);
             } else {
               Toast.fire({
                 icon: 'error',
