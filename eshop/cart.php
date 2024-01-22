@@ -94,7 +94,7 @@ if (empty($_SESSION['uemail'])) {
 <!--/ End Shopping Cart -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -103,7 +103,6 @@ if (empty($_SESSION['uemail'])) {
 			<div class="modal-body">
 				<div class="row no-gutters">
 					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-						<!-- Product Slider -->
 						<div class="product-gallery">
 							<div class="quickview-slider-active">
 								<div class="single-slider">
@@ -120,7 +119,6 @@ if (empty($_SESSION['uemail'])) {
 								</div>
 							</div>
 						</div>
-						<!-- End Product slider -->
 					</div>
 					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 						<div class="quickview-content">
@@ -167,7 +165,6 @@ if (empty($_SESSION['uemail'])) {
 								</div>
 							</div>
 							<div class="quantity">
-								<!-- Input Order -->
 								<div class="input-group">
 									<div class="button minus">
 										<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
@@ -181,7 +178,6 @@ if (empty($_SESSION['uemail'])) {
 										</button>
 									</div>
 								</div>
-								<!--/ End Input Order -->
 							</div>
 							<div class="add-to-cart">
 								<a href="#" class="btn">Add to cart</a>
@@ -203,7 +199,7 @@ if (empty($_SESSION['uemail'])) {
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- Modal end -->
 <?php
 include('./include/footer.php');

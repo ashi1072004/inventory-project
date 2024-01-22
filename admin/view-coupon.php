@@ -24,42 +24,48 @@ include("./include/sidebar.php");
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>View Staff</h4>
-                            <a class="btn btn-primary text-right" href="./add-staff.php">Add Staff</a>
+                            <h4>View Coupons</h4>
+                            <a class="btn btn-primary text-right" href="./add-coupon.php">Add Coupons</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>Staff Name</th>
-                                            <th>Staff Email</th>
-                                            <th>Staff Role</th>
-                                            <th>Date</th>
-                                            <th colspan='2'>Actions</th>
+                                            <th>Coupon Name</th>
+                                            <th>Discount</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Admin Email</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $sup = "SELECT * FROM `admin` ad INNER JOIN `role` rl ON ad.roleid=rl.rid ";
-                                        $run = mysqli_query($conn, $sup);
+                                        $ctg = "SELECT * FROM `coupon` ";
+                                        $run = mysqli_query($conn, $ctg);
                                         while ($fetch = mysqli_fetch_assoc($run)) {
                                         ?>
                                             <tr>
                                                 <td>
-                                                    <?php echo $fetch['aname'] ?>
+                                                    <?php echo $fetch['cuname'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $fetch['email'] ?>
+                                                    <?php echo $fetch['discount'] ?>%
                                                 </td>
                                                 <td>
-                                                    <?php echo $fetch['rname'] ?>
+                                                    <?php echo $fetch['startd'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $fetch['date'] ?>
+                                                    <?php echo $fetch['endd'] ?>
                                                 </td>
-                                                <td><a href="./update-staff.php?adid=<?php echo $fetch['adid'] ?>"><span data-feather="edit" data-toggle="tooltip" title="Update"></span></a></td>
-                                                <td><button data-id="<?php echo $fetch['adid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                                                <td>
+                                                    <?php echo $fetch['aemail'] ?>
+                                                </td>
+                                                <td><button data-id="<?php echo $fetch['cuid'] ?>" class="del"><span data-feather="trash-2" data-toggle="tooltip" title="Delete"></span></button></td>
+                                                <!-- <script>
+                                                    feather.replace()
+                                                </script> -->
                                             </tr>
                                         <?php
                                         }
@@ -90,14 +96,14 @@ include("./include/footer.php");
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let aid = $(this).data("id");
-                    // alert(aid);
+                    let cuid = $(this).data("id");
+                    // alert(cuid);
                     let btn = this;
                     $.ajax({
                         method: "GET",
                         url: "./ajax/delete.php",
                         data: {
-                            "delaid": aid
+                            "delcuid": cuid
                         },
                         success: function(res) {
                             // alert(res);
@@ -109,7 +115,10 @@ include("./include/footer.php");
                                 });
                                 $(btn).closest("tr").fadeOut();
                             } else {
-                                alert("Data couldn't be deleted.");
+                                Swal.fire({
+                                    title: "Not Deleted!",
+                                    icon: "error"
+                                });
                             }
                         }
                     });

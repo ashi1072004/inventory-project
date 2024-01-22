@@ -33,6 +33,7 @@ include("./include/sidebar.php");
                                             <th>Address2</th>
                                             <th>Postal Code</th>
                                             <th>Total Cash</th>
+                                            <th>Discount</th>
                                             <th>Order Date</th>
                                             <th>Status</th>
                                             <th colspan="3" class="text-center">Actions</th>

@@ -42,6 +42,7 @@ include("./include/sidebar.php");
                                     <input type="checkbox" value="Supplier" name="ac_array[]">Supplier<br>
                                     <input type="checkbox" value="Quantity/Measurement" name="ac_array[]">Quantity/Measurement<br>
                                     <input type="checkbox" value="Product" name="ac_array[]">Product<br>
+                                    <input type="checkbox" value="Coupon" name="ac_array[]">Coupon<br>
                                     <input type="checkbox" value="" name="ac_array[]" id="Register User">Register User<br>
                                     <input type="checkbox" value="POS" name="ac_array[]">POS<br>
                                     <input type="checkbox" value="Online Orders" name="ac_array[]">Online Orders<br>

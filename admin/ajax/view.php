@@ -132,7 +132,10 @@ if (isset($_GET['load']) && $_GET['load'] == 'orders') {
             $run = mysqli_query($conn, $sql);
             if ($fetch['o_status'] == 'pending') {
                 $class = 'class="text-danger"';
-                $btn = '<td><button data-id="' . $fetch['ucid'] . '" class="btn btn-sm btn-success com m-1">Confirm</button></td>';
+                $btn = '<td>
+                    <button data-id="' . $fetch['ucid'] . '" class="btn btn-sm btn-success com m-1">Confirm</button>
+                </td>';
+                // <a href="./update-order.php?invoice=' . $fetch['invoice'] . '" class="btn btn-sm btn-primary m-1">Edit</a>
             } else {
                 $class = 'class="text-success"';
                 $btn = '<td><button data-id="' . $fetch['ucid'] . '" class="btn btn-sm btn-danger com m-1">Pending</button></td>';
@@ -158,9 +161,10 @@ if (isset($_GET['load']) && $_GET['load'] == 'orders') {
 
             $output .= '
                 <td>' . $fetch['tcash'] . '</td>
+                <td>' . $fetch['discount'] . '%</td>
                 <td>' . $fetch['udate'] . '</td>
                 <td ' . $class . '>' . $fetch['o_status'] . '</td>
-                <td><a href="./invoice-o.php?invoice=' . $fetch['invoice'] . '" class="btn btn-sm btn-warning text-white m-1">Invoice</a></td>    
+                <td><a href="./invoice-o.php?invoice=' . $fetch['invoice'] . '" class="btn btn-sm btn-warning text-white m-1">Invoice</a></td>
                 ' . $btn . '
                 <td><button data-id="' . $fetch['invoice'] . '" class="btn btn-sm btn-secondary del m-1">Cancel</button></td>
             </tr>';

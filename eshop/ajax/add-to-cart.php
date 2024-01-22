@@ -96,25 +96,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'cart-show') {
         $output2 = '<div class="col-12">
             <div class="total-amount">
                 <div class="row">
-                    <div class="col-lg-8 col-md-5 col-12">
-                        <div class="left">
-                            <div class="coupon">
-                                <form action="#" target="_blank">
-                                    <input name="Coupon" placeholder="Enter Your Coupon">
-                                    <button class="btn">Apply</button>
-                                </form>
-                            </div>
-                            <div class="checkbox">
-                                <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-lg-8 col-md-5 col-12"></div>
                     <div class="col-lg-4 col-md-7 col-12">
                         <div class="right">
                             <ul>
                                 <li>Cart Subtotal<span>' . $tcash . '</span></li>
-                                <li>Shipping<span>Free</span></li>
-                                <li>You Save<span>$10.00</span></li>
+                                <li>Shipping (+100)<span>Free</span></li>
+                                <li>You Save<span>Rs. 100</span></li>
                                 <li class="last">You Pay<span>' . $tcash . '</span></li>
                             </ul>
                             <div class="button5">
@@ -163,6 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'cart-qty') {
 if (isset($_POST['action']) && $_POST['action'] == 'checkout') {
     $invoice = mysqli_real_escape_string($conn, $_POST['invoice']);
     $tcash = $_POST['tcash'];
+    $coupon = $_POST['coupon'];
     $udate = date("Y/m/d");
     // checkout
     $select = "SELECT * FROM `checkout` WHERE `invoice`='$invoice'";
@@ -173,7 +162,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'checkout') {
         $asql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$uemail' ";
         $arun = mysqli_query($conn, $asql);
         if (mysqli_num_rows($arun) > 0) {
-            $insert = "INSERT INTO `checkout`(`invoice`, `uemail`, `tcash`, `o_status`, `udate`)VALUES('$invoice', '$uemail', '$tcash', 'pending', '$udate')";
+            $dcsql = "SELECT * FROM `coupon` WHERE `cuname`='$coupon' ";
+            $dcrun = mysqli_query($conn, $dcsql);
+            $dcfetch = mysqli_fetch_assoc($dcrun);
+            $dc = $dcfetch['discount'];
+            $insert = "INSERT INTO `checkout`(`invoice`, `uemail`, `tcash`, `discount`, `o_status`, `udate`)VALUES('$invoice', '$uemail', '$tcash', '$dc', 'pending', '$udate')";
             $run = mysqli_query($conn, $insert);
             if ($run) {
                 $tcash = 0;
@@ -210,6 +203,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'checkout') {
                         exit;
                     }
                 }
+                // Delete Coupon
+                $del = "DELETE FROM `coupon` WHERE `cuname`='$coupon' ";
+                $drun = mysqli_query($conn, $del);
                 // send mail to user
                 require '../../PHPMailer/Exception.php';
                 require '../../PHPMailer/PHPMailer.php';
@@ -264,7 +260,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'checkout-show') {
             <ul>';
     while ($afetch = mysqli_fetch_assoc($arun)) {
         $output .= '
-                <li>' . $afetch['pname'] . ' (' . $afetch['pqty'] . ')<span>' . $afetch['ptprice'] . '</span></li>';
+                <li>' . $afetch['pname'] . ' (' . $afetch['pqty'] . ')<span>Rs. ' . $afetch['ptprice'] . '</span></li>';
         $tcash = $tcash + $afetch['ptprice'];
     }
     $output .= '
@@ -272,11 +268,23 @@ if (isset($_GET['action']) && $_GET['action'] == 'checkout-show') {
         </div>
     </div>
     <div class="single-widget">
+        <h2>Received a Coupon?</h2>
+        <div class="content mt-3 mx-4">
+            <form id="cform mb-0">
+                <input name="cuname" id="cuname" class="mx-1 p-1" placeholder="Enter Your Coupon" aria-describedby="invalid-cuname">
+                <button id="coupon" class="btn">Apply</button>
+                <small id="invalid-cuname" class="form-text text-danger"></small>
+            </form>
+        </div>
+    </div>
+    <div class="single-widget">
         <h2>CART TOTALS</h2>
         <div class="content">
             <ul>
-                <li>Sub Total<span>' . $tcash . '</span></li>
-                <li>(+) Shipping (<i class="fw-bold">Free Shipping</i>)<span>$10.00</span></li>
+                <li class="d-none" id="coupon-name"></li>
+                <li>Sub Total<span>Rs. ' . $tcash . '</span></li>
+                <li>Shipping (+100)<span>Free</span></li>
+                <li>Discount<span id="dprice"></span></li>
                 <li class="last">Total<span id="tcash">' . $tcash . '</span></li>
             </ul>
         </div>
@@ -369,5 +377,29 @@ if (isset($_GET['action']) && $_GET['action'] == 'order-del') {
         }
     } else {
         echo 2; // not canceled 
+    }
+}
+// Apply Coupon
+if (isset($_GET['action']) && $_GET['action'] == 'coupon') {
+    $cuname = $_GET['cuname'];
+
+    $select = "SELECT * FROM `coupon` WHERE `cuname`='$cuname' ";
+    $crun = mysqli_query($conn, $select);
+    if (mysqli_num_rows($crun) > 0) {
+        $fetch = mysqli_fetch_assoc($crun);
+        $dc = $fetch['discount'];
+        $tsql = "SELECT * FROM `add_to_cart` WHERE `aemail`='$uemail' ";
+        $trun = mysqli_query($conn, $tsql);
+        if (mysqli_num_rows($trun) > 0) {
+            $tcash = 0;
+            while ($tfetch = mysqli_fetch_assoc($trun)) {
+                $tcash += $tfetch['ptprice'];
+            }
+            $dprice = $tcash * ($dc / 100);
+            $after = $tcash - $dprice;
+            echo json_encode(array("dprice" => $dprice, "after" => $after, "coupon" => $cuname));
+        }
+    } else {
+        echo json_encode(array("dprice" => false)); //coupon does not exist
     }
 }

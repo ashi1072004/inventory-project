@@ -1,10 +1,21 @@
 <?php
 include("../include/connect.php");
 
+// Delete Coupon
+if (isset($_GET['delcuid'])) {
+    $cuid = $_GET['delcuid'];
+    $del = "DELETE FROM `coupon` WHERE `cuid` = '$cuid' ";
+    $drun = mysqli_query($conn, $del);
+    if ($drun) {
+        echo 1;
+    } else {
+        echo 2;
+    }
+}
 // Delete Staff
 if (isset($_GET['delaid'])) {
     $aid = $_GET['delaid'];
-    $del = "DELETE FROM `admin` WHERE `aid` = '$aid' ";
+    $del = "DELETE FROM `admin` WHERE `adid` = '$aid' ";
     $drun = mysqli_query($conn, $del);
     if ($drun) {
         echo 1;

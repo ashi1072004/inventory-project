@@ -1,5 +1,39 @@
 <?php
 include("../include/connect.php");
+session_start();
+// ----------------------------- Coupon --------------------------------
+if (isset($_POST['cusub'])) {
+    $nc = mysqli_real_escape_string($conn, $_POST['nc']);
+    $startd = mysqli_real_escape_string($conn, $_POST['startd']);
+    $endd = mysqli_real_escape_string($conn, $_POST['endd']);
+    $discount = mysqli_real_escape_string($conn, $_POST['discount']);
+    // print_r($_POST);
+    if ($nc == "" || empty($discount)) {
+        echo 1; //fields cannot be empty
+    } elseif ($startd > $endd) {
+        echo 2; //invalid dates
+    } else {
+        for ($i = 1; $i <= $nc; $i++) {
+            $cuname = "COUPON_" . rand('10000', '99999');
+            // coupon name different
+            label:
+            $select = "SELECT * FROM `coupon` WHERE `cuname`='$cuname'";
+            $crun = mysqli_query($conn, $select);
+            if (mysqli_num_rows($crun) > 0) {
+                $cuname = "COUPON_" . rand('10000', '99999');
+                goto label;
+            }
+            $aemail = $_SESSION['email'];
+            $insert = "INSERT INTO `coupon`(`cuname`, `discount`, `startd`, `endd`, `aemail`)VALUES('$cuname', '$discount', '$startd', '$endd', '$aemail')";
+            $run = mysqli_query($conn, $insert);
+        }
+        if ($run) {
+            echo 3; //inserted
+        } else {
+            echo 4; // not inserted
+        }
+    }
+}
 // ----------------------------- Staff --------------------------------
 if (isset($_POST['asub'])) {
     $aname = mysqli_real_escape_string($conn, $_POST['aname']);
@@ -8,6 +42,7 @@ if (isset($_POST['asub'])) {
     $cpass = mysqli_real_escape_string($conn, $_POST['cpass']);
     $roleid = mysqli_real_escape_string($conn, $_POST['roleid']);
     // print_r($_POST);
+    $date = date("Y/m/d");
     if ($aname == "" || $email == "" || $password == "" || $cpass == "" || empty($roleid)) {
         echo 1; //fields cannot be empty
     } else {
@@ -17,7 +52,7 @@ if (isset($_POST['asub'])) {
             echo 2; //email already exists
         } else {
             if ($password == $cpass) {
-                $insert = "INSERT INTO `admin`(`roleid`, `aname`, `email`, `password`)VALUES('$roleid', '$aname', '$email', '$password')";
+                $insert = "INSERT INTO `admin`(`roleid`, `aname`, `email`, `password`, `date`)VALUES('$roleid', '$aname', '$email', '$password', '$date')";
                 $run = mysqli_query($conn, $insert);
                 if ($run) {
                     echo 3; //inserted

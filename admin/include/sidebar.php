@@ -51,6 +51,13 @@ if ($rfetch['raccess'] == 'all') {
         </ul>
     </li>
     <li class="dropdown">
+        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="tag"></i><span>Coupons</span></a>
+        <ul class="dropdown-menu">
+            <li><a class="nav-link" href="./add-coupon.php">Add Coupons</a></li>
+            <li><a class="nav-link" href="./view-coupon.php">View Coupons</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>User Registeration</span></a>
         <ul class="dropdown-menu">
             <li><a class="nav-link" href="./add-user.php">Add User</a></li>
@@ -153,6 +160,17 @@ if ($rfetch['raccess'] == 'all') {
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="./add-product.php">Add Product</a></li>
                                 <li><a class="nav-link" href="./view-product.php">View Product</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    }
+                    if ($val == 'Coupon') {
+                    ?>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="tag"></i><span>Coupon</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="./add-coupon.php">Add Coupons</a></li>
+                                <li><a class="nav-link" href="./view-coupon.php">View Coupons</a></li>
                             </ul>
                         </li>
                     <?php

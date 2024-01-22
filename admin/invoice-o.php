@@ -22,7 +22,7 @@ $fetch = mysqli_fetch_assoc($run);
                         <div class="col-lg-12">
                             <div class="invoice-title">
                                 <h2>Invoice</h2>
-                                <div class="invoice-number"><?php echo $invoice ?></div>
+                                <div class="invoice-number"><?= $invoice ?></div>
                             </div>
                             <hr>
                             <div class="row">
@@ -38,8 +38,8 @@ $fetch = mysqli_fetch_assoc($run);
                                             echo $ufetch['ufname'] . " " . $ufetch['ulname'] . "<br>";
                                             echo $ufetch['umob'] . "<br>";
                                         }
-                                        ?>
-                                        <?= $uemail ?><br>
+                                        echo $uemail;
+                                        ?><br>
                                     </address>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@ $fetch = mysqli_fetch_assoc($run);
                                 <div class="col-md-6 text-md-right">
                                     <address>
                                         <strong>Checkout Date:</strong><br>
-                                        <?php echo $fetch['udate'] ?><br><br>
+                                        <?= $fetch['udate'] ?><br><br>
                                     </address>
                                 </div>
                             </div>
@@ -79,14 +79,14 @@ $fetch = mysqli_fetch_assoc($run);
                                     while ($row = mysqli_fetch_assoc($orun)) {
                                     ?>
                                         <tr>
-                                            <td><?php echo $id ?></td>
-                                            <td><?php echo $row['pname'] ?></td>
-                                            <td class="text-center">Rs. <?php echo $row['pprice'] ?></td>
-                                            <td class="text-center"><?php echo $row['pqty'] ?></td>
-                                            <td class="text-right"><?php echo $row['ptprice'] ?></td>
+                                            <td><?= $id ?></td>
+                                            <td><?= $row['pname'] ?></td>
+                                            <td class="text-center">Rs. <?= $row['pprice'] ?></td>
+                                            <td class="text-center"><?= $row['pqty'] ?></td>
+                                            <td class="text-right"><?= $row['ptprice'] ?></td>
                                         </tr>
                                     <?php
-                                        $id++;
+                                        $id += 1;
                                     }
                                     ?>
                                 </table>
@@ -96,7 +96,7 @@ $fetch = mysqli_fetch_assoc($run);
                                 <div class="col-lg-4 text-right">
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Total</div>
-                                        <div class="invoice-detail-value">Rs. <?php echo $fetch['tcash'] ?></div>
+                                        <div class="invoice-detail-value">Rs. <?= $fetch['tcash'] ?></div>
                                     </div>
                                 </div>
                             </div>

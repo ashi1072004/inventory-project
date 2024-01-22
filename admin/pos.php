@@ -235,7 +235,7 @@ include("./include/footer.php");
                 }
             });
         });
-        // increment quantity
+        // Change quantity
         $(document).on("change", ".aqty", function() {
             let aqty = $(this).val();
             var acode = $(this).closest("tr").find("#acode").text();

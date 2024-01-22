@@ -3,8 +3,19 @@ include('./include/all-header.php');
 if (empty($_SESSION['uemail'])) {
 	echo '<script>window.location.href="./login.php"</script>';
 }
-$uemail = $_SESSION['uemail'];
+// Delete Expired Coupons
+$currentd = date("Y-m-d");
+// $dsql = "SELECT * FROM `coupon` WHERE `endd` < '$currentd' ";
+$dsql = "DELETE FROM `coupon` WHERE `endd` < '$currentd' ";
+$drun = mysqli_query($conn, $dsql);
+// $fetch = mysqli_fetch_assoc($drun);
+// if ($drun) {
+// 	echo '<script>alert("Deleted")</script>';
+// } else {
+// 	echo '<script>alert("Not Deleted")</script>';
+// }
 
+$uemail = $_SESSION['uemail'];
 $sql = "SELECT * FROM `user` WHERE `uemail`='$uemail' ";
 $run = mysqli_query($conn, $sql);
 $fetch = mysqli_fetch_assoc($run);
@@ -195,13 +206,15 @@ include('./include/footer.php');
 		$("#checkout").on("click", "#proceed", function() {
 			var invoice = $("input[name=invoice]").val();
 			var tcash = $("#tcash").text();
-			// alert(invoice);
+			var coupon = $('#checkout #coupon-name').text();
+			alert(tcash);
 			$.ajax({
 				method: "POST",
 				url: "./ajax/add-to-cart.php",
 				data: {
 					"invoice": invoice,
 					"tcash": tcash,
+					"coupon": coupon,
 					"action": "checkout"
 				},
 				success: function(res) {
@@ -235,6 +248,32 @@ include('./include/footer.php');
 							title: 'Error Occured! Could not Proceed'
 						});
 						showCheckout();
+					}
+				}
+			});
+		});
+		// Apply Coupon
+		$("#checkout").on("click", "#coupon", function(e) {
+			e.preventDefault();
+			var cuname = $('#checkout #cuname').val();
+			// alert(cuname);
+			$.ajax({
+				method: "GET",
+				url: "./ajax/add-to-cart.php",
+				data: {
+					'cuname': cuname,
+					'action': 'coupon'
+				},
+				success: function(res) {
+					res = JSON.parse(res);
+					// alert(res);
+					if (res.dprice == false) {
+						$('#checkout #invalid-cuname').html("Coupon does not exist!");
+					} else {
+						$('#checkout #invalid-cuname').html("");
+						$('#checkout #dprice').text("$" + res.dprice);
+						$('#checkout #tcash').text(res.after);
+						$('#checkout #coupon-name').text(res.coupon);
 					}
 				}
 			});

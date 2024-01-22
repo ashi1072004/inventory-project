@@ -42,3 +42,29 @@ if (isset($_GET['action']) && $_GET['action'] == 'cancel') {
         echo 2; // not canceled 
     }
 }
+// view orders
+if (isset($_GET['load']) && $_GET['load'] == 'orders') {
+    $invoice = $_GET['invoice'];
+    $adsql = "SELECT * FROM `admin_order` WHERE `invoice`='$invoice' ";
+    $adrun = mysqli_query($conn, $adsql);
+    if (mysqli_num_rows($adrun) > 0) {
+        $output = "";
+        $tcash = 0;
+        while ($fetch = mysqli_fetch_assoc($adrun)) {
+            $output .= '<tr>
+                <td id="acode">' . $fetch['pcode'] . '</td>
+                <td>' . $fetch['pname'] . '</td>
+                <td>' . $fetch['pprice'] . '</td>
+                <td><input type="number" min="1" name="aqty" class="aqty" value="' . $fetch['pqty'] . '" style="width: 50px; outline: none;"></td>
+                <td>' . $fetch['ptprice'] . '</td>
+            </tr>
+            <tr><td><h6>Discounted Price: </h6></td></tr>';
+            $tcash += $fetch['ptprice'];
+        }
+        $upsql = "UPDATE `checkout` SET `tcash`='$tcash' WHERE `invoice`='$invoice' ";
+        $uprun = mysqli_query($conn, $upsql);
+    } else {
+        $output = "<tr class='text-center'><td colspan='5'>Invoice Empty</td></tr>";
+    }
+    echo $output;
+}

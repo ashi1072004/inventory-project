@@ -95,7 +95,6 @@ if (isset($_GET['in-order'])) {
     $invoice = $_GET['in-order'];
     $aqty = $_GET['aqty'];
     $pcode = $_GET['acode'];
-    $aemail = $_SESSION['email'];
 
     if ($aqty < 1) {
         echo 1; //invalid value
